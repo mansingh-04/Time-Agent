@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #f5f6f8; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #101720; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #2c5cc5; text-decoration: none; }
+  a:hover { color: #1e429b; text-decoration: underline; }
+  input, select, textarea, button { font-family: inherit; font-size: inherit; color: inherit; }
+  @keyframes ta-pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+  @keyframes ta-rise { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+</style>
+</helmet>
+
+<sc-if value="{{ show.login }}" hint-placeholder-val="{{ true }}">
+<div style="min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);">
+  <div style="background: #101720; color: #fff; padding: 56px 56px 40px; display: flex; flex-direction: column; gap: 44px; min-width: 0;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 30px; height: 30px; border: 2px solid #7fa4ea; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #7fa4ea;">T</div>
+      <div style="font-size: 17px; font-weight: 600; letter-spacing: 0.14em; font-family: 'IBM Plex Mono', monospace;">TIME AGENT</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 18px; max-width: 520px;">
+      <div style="font-size: 40px; line-height: 1.12; font-weight: 600; text-wrap: pretty;">Connect field reality to the project schedule.</div>
+      <div style="font-size: 15px; line-height: 1.65; color: #9aa5b1; text-wrap: pretty;">TIME AGENT is the reconciliation layer between site execution and your project schedule. It does not replace Primavera P6 or Microsoft Project — those remain the system of record.</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px; max-width: 460px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #6b7683;">HOW IT WORKS</div>
+      <sc-for list="{{ pipeline }}" as="p" hint-placeholder-count="6">
+        <div style="display: flex; align-items: center; gap: 14px; padding: 11px 14px; border: 1px solid #24303d; border-radius: 6px; background: #161f2a;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7fa4ea; width: 18px;">{{ p.n }}</div>
+          <div style="font-size: 13px; font-weight: 500; letter-spacing: 0.04em;">{{ p.label }}</div>
+          <div style="margin-left: auto; font-size: 12px; color: #6b7683;">{{ p.note }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top: auto; font-size: 12px; color: #5b6672;">SIH 2026 prototype · Mock data · 500 MW Power Plant, ABC Engineering</div>
+  </div>
+
+  <div style="background: #fff; padding: 56px 56px; display: flex; flex-direction: column; justify-content: center; gap: 28px; border-left: 1px solid #e4e7ec; min-width: 0;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-size: 22px; font-weight: 600;">Sign in</div>
+      <div style="font-size: 13px; color: #6b7683;">Use your project credentials. Access is role-aware.</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px; max-width: 420px;">
+      <label style="display: flex; flex-direction: column; gap: 6px;">
+        <span style="font-size: 12px; font-weight: 500; color: #3d4854;">Email / Employee ID</span>
+        <input type="text" value="priya.sharma@abceng.in" style="padding: 10px 12px; border: 1px solid #d5dae1; border-radius: 5px; background: #fbfcfd; font-size: 14px;" />
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 6px;">
+        <span style="font-size: 12px; font-weight: 500; color: #3d4854;">Password</span>
+        <input type="password" value="demo1234" style="padding: 10px 12px; border: 1px solid #d5dae1; border-radius: 5px; background: #fbfcfd; font-size: 14px;" />
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 6px;">
+        <span style="font-size: 12px; font-weight: 500; color: #3d4854;">Role</span>
+        <select style="padding: 10px 12px; border: 1px solid #d5dae1; border-radius: 5px; background: #fbfcfd; font-size: 14px;">
+          <option>Planner</option>
+          <option>Site Supervisor</option>
+          <option>Project Manager</option>
+        </select>
+      </label>
+      <button onClick="{{ loginPlanner }}" style="margin-top: 4px; padding: 12px 16px; border: none; border-radius: 5px; background: #2c5cc5; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;" style-hover="background: #1e429b;">Sign in</button>
+    </div>
+
+    <div style="max-width: 420px; border-top: 1px solid #e4e7ec; padding-top: 22px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: baseline; gap: 10px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #6b7683;">DEMO ACCESS</div>
+        <div style="font-size: 12px; color: #8a929c;">jump straight into a role</div>
+      </div>
+      <div style="display: grid; gap: 8px;">
+        <sc-for list="{{ demoRoles }}" as="r" hint-placeholder-count="3">
+          <div onClick="{{ r.go }}" style="display: flex; align-items: center; gap: 14px; padding: 13px 14px; border: 1px solid #e4e7ec; border-radius: 6px; cursor: pointer; background: #fff;" style-hover="border-color: #2c5cc5; background: #f7f9fd;">
+            <div style="width: 32px; height: 32px; border-radius: 4px; background: #eef2f9; color: #2c5cc5; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;">{{ r.initials }}</div>
+            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+              <div style="font-size: 13px; font-weight: 600;">{{ r.label }}</div>
+              <div style="font-size: 12px; color: #6b7683;">{{ r.desc }}</div>
+            </div>
+            <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2c5cc5;">ENTER →</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ show.split }}" hint-placeholder-val="{{ false }}">
+<div style="height: 100vh; display: flex; flex-direction: column; background: #f5f6f8;">
+  <div style="background: #101720; color: #fff; padding: 12px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 24px; height: 24px; border: 2px solid #7fa4ea; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #7fa4ea;">T</div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.13em;">TIME AGENT</div>
+    </div>
+    <div style="font-size: 13px; color: #9aa5b1;">Live demo — site portal and planner portal, side by side</div>
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #9aa5b1;">500 MW POWER PLANT · 04 SEP 2026</div>
+      <div onClick="{{ resetDemo }}" style="padding: 6px 11px; border: 1px solid #2b3846; border-radius: 5px; font-size: 12px; cursor: pointer; color: #cfd6de;" style-hover="border-color: #7fa4ea; color: #fff;">Reset demo</div>
+      <div onClick="{{ logout }}" style="padding: 6px 11px; border-radius: 5px; background: #1b2531; font-size: 12px; cursor: pointer; color: #cfd6de;" style-hover="color: #fff;">Exit</div>
+    </div>
+  </div>
+
+  <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);">
+    <div style="min-width: 0; overflow-y: auto; border-right: 1px solid #dfe3e8; background: #fbfcfd;">
+      <div style="padding: 14px 22px; background: #fff; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 2;">
+        <div style="width: 30px; height: 30px; border-radius: 4px; background: #eef2f9; color: #2c5cc5; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;">RK</div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6b7683;">PORTAL 1 · SITE SUPERVISOR</div>
+          <div style="font-size: 14px; font-weight: 600; margin-top: 2px;">Ramesh Kumar · Piping, Unit-1</div>
+        </div>
+      </div>
+
+      <div style="padding: 20px 22px 40px; display: flex; flex-direction: column; gap: 18px;">
+        <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 14px;">
+          <div>
+            <div style="font-size: 15px; font-weight: 600;">Send a field update</div>
+            <div style="font-size: 12px; color: #6b7683; margin-top: 3px;">Two prepared site notes. No activity IDs — the supervisor writes what happened.</div>
+          </div>
+          <sc-for list="{{ samples }}" as="s" hint-placeholder-count="2">
+            <div style="border: 1px solid #e4e7ec; border-radius: 6px; padding: 14px; display: flex; flex-direction: column; gap: 11px; background: #fbfcfd;">
+              <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 7px; border-radius: 3px; background: #f0f2f5; color: #5b6672;">{{ s.tag }}</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 7px; border-radius: 3px; background: {{ s.routeBg }}; color: {{ s.routeColor }};">{{ s.routeLabel }}</span>
+              </div>
+              <div style="font-size: 14px; line-height: 1.6; color: #26303c;">“{{ s.text }}”</div>
+              <div style="font-size: 12px; color: #6b7683; line-height: 1.5;">{{ s.why }}</div>
+              <div onClick="{{ s.send }}" style="padding: 10px 14px; border-radius: 5px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; background: {{ s.btnBg }}; color: {{ s.btnColor }}; border: 1px solid {{ s.btnBorder }};" style-hover="opacity: 0.9;">{{ s.btnLabel }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ sending.active }}" hint-placeholder-val="{{ false }}">
+          <div style="background: #fff; border: 1px solid #d6e2f7; border-radius: 7px; overflow: hidden;">
+            <div style="background: #f2f6fd; padding: 11px 16px; border-bottom: 1px solid #d6e2f7; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2c5cc5;">TIME AGENT · PROCESSING</div>
+            <div style="padding: 16px; display: flex; flex-direction: column; gap: 11px;">
+              <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+                <div style="display: flex; align-items: center; gap: 10px; opacity: {{ s.opacity }};">
+                  <span style="width: 13px; height: 13px; border-radius: 50%; border: 2px solid {{ s.ring }}; background: {{ s.fill }};"></span>
+                  <span style="font-size: 13px; color: #26303c;">{{ s.label }}</span>
+                  <span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8a929c;">{{ s.state }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ question.open }}" hint-placeholder-val="{{ false }}">
+          <div style="background: #fff; border: 1px solid #f0dfbc; border-radius: 7px; overflow: hidden;">
+            <div style="background: #fdf7ec; padding: 11px 16px; border-bottom: 1px solid #f0dfbc; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #8a5a00;">PLANNER ASKED YOU A QUESTION</div>
+            <div style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="font-size: 13px; line-height: 1.55; color: #26303c;">{{ question.text }}</div>
+              <div onClick="{{ question.reply }}" style="padding: 9px 13px; border-radius: 5px; background: #101720; color: #fff; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer;">{{ question.replyLabel }}</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px;">
+          <div style="padding: 14px 18px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center;">
+            <div style="font-size: 14px; font-weight: 600;">My submissions</div>
+            <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7683;">{{ feedCount }}</div>
+          </div>
+          <sc-if value="{{ feedEmpty }}" hint-placeholder-val="{{ true }}">
+            <div style="padding: 26px 18px; font-size: 13px; color: #8a929c; text-align: center;">Nothing sent yet. Send one of the two site notes above.</div>
+          </sc-if>
+          <sc-for list="{{ feed }}" as="f" hint-placeholder-count="0">
+            <div style="padding: 14px 18px; border-bottom: 1px solid #f0f2f5; display: flex; flex-direction: column; gap: 8px;">
+              <div style="font-size: 13px; line-height: 1.55; color: #26303c;">“{{ f.text }}”</div>
+              <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #2c5cc5;">{{ f.actId }}</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6b7683;">{{ f.ts }}</span>
+                <span style="margin-left: auto; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 3px; background: {{ f.statusBg }}; color: {{ f.statusColor }};">{{ f.status }}</span>
+              </div>
+              <div style="font-size: 11px; color: #8a929c;">{{ f.supervisorNote }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="min-width: 0; overflow-y: auto; background: #f5f6f8;">
+      <div style="padding: 14px 22px; background: #fff; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 2; flex-wrap: wrap;">
+        <div style="width: 30px; height: 30px; border-radius: 4px; background: #eef2f9; color: #2c5cc5; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;">PS</div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6b7683;">PORTAL 2 · PLANNER</div>
+          <div style="font-size: 14px; font-weight: 600; margin-top: 2px;">Priya Sharma · Project controls</div>
+        </div>
+        <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 5px 10px; border-radius: 4px; background: #f2f6fd; color: #2c5cc5;">AUTO-APPROVE ≥ {{ threshold }}%</div>
+      </div>
+
+      <div style="padding: 20px 22px 40px; display: flex; flex-direction: column; gap: 18px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px;">
+          <sc-for list="{{ splitStats }}" as="s" hint-placeholder-count="3">
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 14px;">
+              <div style="font-size: 12px; color: #6b7683;">{{ s.label }}</div>
+              <div style="font-size: 26px; font-weight: 600; margin-top: 5px; color: {{ s.color }};">{{ s.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ feedEmpty }}" hint-placeholder-val="{{ true }}">
+          <div style="background: #fff; border: 1px dashed #c9d2dd; border-radius: 7px; padding: 34px 22px; text-align: center;">
+            <div style="font-size: 14px; font-weight: 600;">Waiting for field updates</div>
+            <div style="font-size: 12px; color: #6b7683; margin-top: 5px;">Anything sent from the site portal appears here with its AI mapping.</div>
+          </div>
+        </sc-if>
+
+        <sc-for list="{{ feed }}" as="f" hint-placeholder-count="0">
+          <div style="background: #fff; border: 1px solid {{ f.cardBorder }}; border-radius: 7px; overflow: hidden; animation: ta-rise .3s ease both;">
+            <div style="padding: 11px 16px; border-bottom: 1px solid #eaeff7; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: {{ f.cardHeadBg }};">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #5b6672;">{{ f.ts }} · {{ f.source }}</span>
+              <span style="margin-left: auto; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 3px; background: {{ f.statusBg }}; color: {{ f.statusColor }};">{{ f.status }}</span>
+            </div>
+            <div style="padding: 16px; display: flex; flex-direction: column; gap: 14px;">
+              <div style="font-size: 14px; line-height: 1.6; color: #26303c;">“{{ f.text }}”</div>
+              <div style="border: 1px solid #d6e2f7; border-radius: 6px; overflow: hidden;">
+                <div style="background: #f2f6fd; padding: 9px 13px; border-bottom: 1px solid #d6e2f7; display: flex; align-items: center; gap: 10px;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2c5cc5;">AI EXTRACTION</span>
+                  <span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: {{ f.confColor }};">{{ f.conf }}% {{ f.confLevel }}</span>
+                </div>
+                <div style="padding: 13px; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px;">
+                  <div><div style="font-size: 11px; color: #6b7683;">Activity</div><div style="font-size: 12px; font-weight: 600; margin-top: 3px;">{{ f.actId }} · {{ f.actName }}</div></div>
+                  <div><div style="font-size: 11px; color: #6b7683;">Event</div><div style="font-size: 12px; font-weight: 600; margin-top: 3px;">{{ f.event }}</div></div>
+                  <div><div style="font-size: 11px; color: #6b7683;">Progress</div><div style="font-size: 12px; font-weight: 600; margin-top: 3px;">{{ f.progress }}</div></div>
+                  <div><div style="font-size: 11px; color: #6b7683;">Date</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 3px;">{{ f.date }}</div></div>
+                </div>
+              </div>
+              <div style="font-size: 12px; line-height: 1.55; color: #3d4854; padding: 11px 13px; border-radius: 6px; background: {{ f.noteBg }}; border: 1px solid {{ f.noteBorder }};">{{ f.plannerNote }}</div>
+              <sc-if value="{{ f.pending }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; gap: 9px; flex-wrap: wrap;">
+                  <div onClick="{{ f.approve }}" style="flex: 1 1 160px; padding: 10px 14px; border-radius: 5px; background: #2c5cc5; color: #fff; font-size: 13px; font-weight: 600; text-align: center; cursor: pointer;" style-hover="background: #1e429b;">Approve &amp; sync</div>
+                  <div onClick="{{ f.ask }}" style="flex: 1 1 140px; padding: 10px 14px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 13px; text-align: center; cursor: pointer; background: #fff;" style-hover="border-color: #2c5cc5;">Ask supervisor</div>
+                  <div onClick="{{ f.reject }}" style="flex: 1 1 100px; padding: 10px 14px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 13px; text-align: center; cursor: pointer; background: #fff;" style-hover="border-color: #b3261e; color: #b3261e;">Reject</div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 40; background: #101720; color: #fff; padding: 12px 20px; border-radius: 6px; font-size: 13px; display: flex; align-items: center; gap: 12px; animation: ta-rise .25s ease both;">
+      <span style="width: 7px; height: 7px; border-radius: 50%; background: #4ea877;"></span>
+      {{ toast }}
+    </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ show.app }}" hint-placeholder-val="{{ true }}">
+<div style="min-height: 100vh; display: flex; align-items: stretch;">
+  <div style="width: 232px; flex: 0 0 232px; background: #101720; color: #fff; display: flex; flex-direction: column; padding: 20px 14px; gap: 22px; position: sticky; top: 0; height: 100vh;">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 6px;">
+      <div style="width: 26px; height: 26px; border: 2px solid #7fa4ea; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #7fa4ea;">T</div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; letter-spacing: 0.13em;">TIME AGENT</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="8">
+        <div onClick="{{ n.go }}" style="display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 5px; font-size: 13px; cursor: pointer; background: {{ n.bg }}; color: {{ n.color }}; font-weight: {{ n.weight }};" style-hover="background: #1b2531;">
+          <span style="width: 5px; height: 5px; border-radius: 50%; background: {{ n.dot }};"></span>
+          <span>{{ n.label }}</span>
+          <sc-if value="{{ n.count }}" hint-placeholder-val="{{ false }}">
+            <span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 6px; border-radius: 9px; background: #2c5cc5; color: #fff;">{{ n.count }}</span>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top: auto; border-top: 1px solid #232e3a; padding-top: 14px; display: flex; align-items: center; gap: 10px;">
+      <div style="width: 32px; height: 32px; border-radius: 4px; background: #1b2531; color: #9aa5b1; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">{{ user.initials }}</div>
+      <div style="display: flex; flex-direction: column; min-width: 0;">
+        <div style="font-size: 12px; font-weight: 600;">{{ user.name }}</div>
+        <div style="font-size: 11px; color: #6b7683;">{{ user.role }}</div>
+      </div>
+      <div onClick="{{ logout }}" style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #7fa4ea; cursor: pointer;" style-hover="color: #fff;">EXIT</div>
+    </div>
+  </div>
+
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+    <div style="background: #fff; border-bottom: 1px solid #e4e7ec; padding: 14px 28px; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; z-index: 5;">
+      <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+        <div style="font-size: 17px; font-weight: 600;">{{ title }}</div>
+        <div style="font-size: 12px; color: #6b7683;">{{ subtitle }}</div>
+      </div>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 7px 11px; border: 1px solid #e4e7ec; border-radius: 5px; font-size: 12px; color: #3d4854;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #1f7a45;"></span>
+          500 MW Power Plant
+        </div>
+        <div style="padding: 7px 11px; border: 1px solid #e4e7ec; border-radius: 5px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #3d4854;">04 SEP 2026</div>
+        <div onClick="{{ goNotifications }}" style="padding: 7px 11px; border: 1px solid #e4e7ec; border-radius: 5px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 7px;" style-hover="border-color: #2c5cc5;">
+          Alerts
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 1px 6px; border-radius: 9px; background: #fdeeee; color: #b3261e;">{{ alertCount }}</span>
+        </div>
+        <div onClick="{{ logout }}" style="padding: 7px 11px; border-radius: 5px; background: #eef2f9; color: #2c5cc5; font-size: 12px; font-weight: 500; cursor: pointer;" style-hover="background: #e0e8f6;">Switch role</div>
+      </div>
+    </div>
+
+    <div style="padding: 24px 28px 56px; display: flex; flex-direction: column; gap: 20px;">
+
+      <sc-if value="{{ show.supDash }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
+          <sc-for list="{{ supStats }}" as="s" hint-placeholder-count="4">
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 16px;">
+              <div style="font-size: 12px; color: #6b7683;">{{ s.label }}</div>
+              <div style="font-size: 30px; font-weight: 600; margin-top: 8px; color: {{ s.color }};">{{ s.value }}</div>
+              <div style="font-size: 12px; color: #8a929c; margin-top: 4px;">{{ s.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; flex-direction: column; gap: 20px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <div style="font-size: 15px; font-weight: 600;">Submit field update</div>
+                <div style="font-size: 13px; color: #6b7683;">Describe the work in your own words. No activity IDs needed — TIME AGENT finds the schedule activity.</div>
+              </div>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <div onClick="{{ goSubmitWrite }}" style="flex: 1 1 150px; padding: 14px; border: 1px solid #d5dae1; border-radius: 6px; cursor: pointer; background: #fbfcfd;" style-hover="border-color: #2c5cc5; background: #f7f9fd;">
+                  <div style="font-size: 13px; font-weight: 600;">Write update</div>
+                  <div style="font-size: 12px; color: #6b7683; margin-top: 3px;">Type a site note</div>
+                </div>
+                <div onClick="{{ goSubmitVoice }}" style="flex: 1 1 150px; padding: 14px; border: 1px solid #d5dae1; border-radius: 6px; cursor: pointer; background: #fbfcfd;" style-hover="border-color: #2c5cc5; background: #f7f9fd;">
+                  <div style="font-size: 13px; font-weight: 600;">Voice update</div>
+                  <div style="font-size: 12px; color: #6b7683; margin-top: 3px;">Speak in Hindi or English</div>
+                </div>
+                <div onClick="{{ goSubmitUpload }}" style="flex: 1 1 150px; padding: 14px; border: 1px solid #d5dae1; border-radius: 6px; cursor: pointer; background: #fbfcfd;" style-hover="border-color: #2c5cc5; background: #f7f9fd;">
+                  <div style="font-size: 13px; font-weight: 600;">Upload file</div>
+                  <div style="font-size: 12px; color: #6b7683; margin-top: 3px;">DPR, Excel, site diary</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px;">
+              <div style="padding: 15px 18px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center;">
+                <div style="font-size: 14px; font-weight: 600;">Recent submissions</div>
+                <div onClick="{{ goUpdates }}" style="margin-left: auto; font-size: 12px; color: #2c5cc5; cursor: pointer;">View all</div>
+              </div>
+              <sc-for list="{{ recentUpdates }}" as="u" hint-placeholder-count="4">
+                <div style="padding: 14px 18px; border-bottom: 1px solid #f0f2f5; display: flex; gap: 16px; align-items: flex-start;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8a929c; width: 52px; flex: 0 0 52px; padding-top: 2px;">{{ u.time }}</div>
+                  <div style="min-width: 0; display: flex; flex-direction: column; gap: 5px;">
+                    <div style="font-size: 13px; line-height: 1.5; color: #26303c;">{{ u.text }}</div>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 6px; border-radius: 3px; background: #f0f2f5; color: #5b6672;">{{ u.source }}</span>
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6b7683;">{{ u.match }}</span>
+                    </div>
+                  </div>
+                  <div style="margin-left: auto; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 3px; white-space: nowrap; background: {{ u.statusBg }}; color: {{ u.statusColor }};">{{ u.status }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.submit }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+          <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 20px; display: flex; flex-direction: column; gap: 18px; min-width: 0;">
+            <div style="display: flex; gap: 6px; padding: 4px; background: #f0f2f5; border-radius: 6px; width: fit-content;">
+              <sc-for list="{{ methods }}" as="m" hint-placeholder-count="3">
+                <div onClick="{{ m.go }}" style="padding: 8px 14px; border-radius: 4px; font-size: 13px; font-weight: 500; cursor: pointer; background: {{ m.bg }}; color: {{ m.color }};">{{ m.label }}</div>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ isWrite }}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-size: 12px; font-weight: 500; color: #3d4854;">What happened on site today?</div>
+                <textarea onChange="{{ onText }}" value="{{ text }}" placeholder="Describe what happened on site today..." style="min-height: 150px; padding: 14px; border: 1px solid #d5dae1; border-radius: 6px; font-size: 14px; line-height: 1.6; resize: vertical; background: #fbfcfd;"></textarea>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                  <div style="font-size: 12px; color: #8a929c;">Example:</div>
+                  <div onClick="{{ fillExample }}" style="font-size: 12px; padding: 5px 10px; border: 1px dashed #c9d2dd; border-radius: 4px; cursor: pointer; color: #3d4854;" style-hover="border-color: #2c5cc5; color: #2c5cc5;">Line 24-XX spool erection started today. Crane was available from 10:30 AM. Around 60% completed.</div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isVoice }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div style="border: 1px solid #d5dae1; border-radius: 6px; background: #fbfcfd; padding: 22px; display: flex; align-items: center; gap: 18px;">
+                  <div style="width: 54px; height: 54px; border-radius: 50%; background: #2c5cc5; display: flex; align-items: center; justify-content: center;">
+                    <span style="width: 16px; height: 16px; border-radius: 3px; background: #fff; animation: ta-pulse 1.6s ease-in-out infinite;"></span>
+                  </div>
+                  <div style="display: flex; align-items: flex-end; gap: 3px; height: 40px; flex: 1;">
+                    <sc-for list="{{ waveform }}" as="w" hint-placeholder-count="40">
+                      <span style="flex: 1; background: #c9d8f3; border-radius: 1px; height: {{ w.h }};"></span>
+                    </sc-for>
+                  </div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #3d4854;">00:14</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6b7683;">LIVE TRANSCRIPT</div>
+                  <div style="font-size: 14px; line-height: 1.6; color: #26303c; padding: 14px; border: 1px solid #e4e7ec; border-radius: 6px;">“Line 24-XX spool erection started today, crane was available from ten thirty, around sixty percent of spools are erected.”</div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isUpload }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="border: 1px dashed #c9d2dd; border-radius: 6px; background: #fbfcfd; padding: 34px; text-align: center;">
+                  <div style="font-size: 14px; font-weight: 600;">Drop DPR, Excel or site diary here</div>
+                  <div style="font-size: 12px; color: #6b7683; margin-top: 5px;">.xlsx, .csv, .pdf, .docx — up to 25 MB</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <sc-for list="{{ files }}" as="f" hint-placeholder-count="2">
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #e4e7ec; border-radius: 6px;">
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 3px 6px; border-radius: 3px; background: #f0f2f5; color: #5b6672;">{{ f.ext }}</span>
+                      <div style="font-size: 13px;">{{ f.name }}</div>
+                      <div style="margin-left: auto; font-size: 12px; color: #1f7a45;">{{ f.rows }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; border-top: 1px solid #f0f2f5; padding-top: 16px;">
+              <label style="display: flex; flex-direction: column; gap: 5px;">
+                <span style="font-size: 11px; font-weight: 500; color: #6b7683;">Project</span>
+                <select style="padding: 8px 10px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 13px; background: #fbfcfd;"><option>500 MW Power Plant</option></select>
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 5px;">
+                <span style="font-size: 11px; font-weight: 500; color: #6b7683;">Discipline</span>
+                <select style="padding: 8px 10px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 13px; background: #fbfcfd;"><option>Piping</option><option>Civil</option><option>Electrical</option><option>Instrumentation</option><option>HSE</option></select>
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 5px;">
+                <span style="font-size: 11px; font-weight: 500; color: #6b7683;">Location</span>
+                <select style="padding: 8px 10px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 13px; background: #fbfcfd;"><option>Unit-1 / Pipe Rack-2</option><option>Unit-1 / Boiler Area</option><option>Unit-2 / Turbine Hall</option></select>
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 5px;">
+                <span style="font-size: 11px; font-weight: 500; color: #6b7683;">Date</span>
+                <input type="text" value="04 Sep 2026" style="padding: 8px 10px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 13px; background: #fbfcfd;" />
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 5px;">
+                <span style="font-size: 11px; font-weight: 500; color: #6b7683;">Shift</span>
+                <select style="padding: 8px 10px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 13px; background: #fbfcfd;"><option>Day (08:00 – 20:00)</option><option>Night (20:00 – 08:00)</option></select>
+              </label>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <button onClick="{{ analyze }}" style="padding: 11px 18px; border: none; border-radius: 5px; background: #2c5cc5; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;" style-hover="background: #1e429b;">Analyze with Time Agent</button>
+              <div style="font-size: 12px; color: #8a929c;">Nothing reaches the schedule until a planner approves it.</div>
+            </div>
+          </div>
+
+          <div style="min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+            <sc-if value="{{ processing }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #fff; border: 1px solid #d6e2f7; border-radius: 7px; overflow: hidden;">
+                <div style="background: #f2f6fd; padding: 12px 16px; border-bottom: 1px solid #d6e2f7; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2c5cc5;">TIME AGENT · PROCESSING</div>
+                <div style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+                  <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+                    <div style="display: flex; align-items: center; gap: 10px; opacity: {{ s.opacity }};">
+                      <span style="width: 14px; height: 14px; border-radius: 50%; border: 2px solid {{ s.ring }}; background: {{ s.fill }};"></span>
+                      <span style="font-size: 13px; color: #26303c;">{{ s.label }}</span>
+                      <span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8a929c;">{{ s.state }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ result }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #fff; border: 1px solid #d6e2f7; border-radius: 7px; overflow: hidden; animation: ta-rise .35s ease both;">
+                <div style="background: #f2f6fd; padding: 12px 16px; border-bottom: 1px solid #d6e2f7; display: flex; align-items: center; gap: 10px;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2c5cc5;">TIME AGENT · AI EXTRACTION</span>
+                  <span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: #1f7a45;">96% CONFIDENCE</span>
+                </div>
+                <div style="padding: 18px; display: flex; flex-direction: column; gap: 16px;">
+                  <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <div style="font-size: 11px; color: #6b7683;">Activity identified</div>
+                    <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;">
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #2c5cc5;">PIP-101</span>
+                      <span style="font-size: 15px; font-weight: 600;">Erect Line 24-XX</span>
+                    </div>
+                  </div>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; border-top: 1px solid #f0f2f5; border-bottom: 1px solid #f0f2f5; padding: 14px 0;">
+                    <div><div style="font-size: 11px; color: #6b7683;">Event</div><div style="font-size: 13px; font-weight: 600; margin-top: 3px;">PROGRESS</div></div>
+                    <div><div style="font-size: 11px; color: #6b7683;">Progress</div><div style="font-size: 13px; font-weight: 600; margin-top: 3px;">60%</div></div>
+                    <div><div style="font-size: 11px; color: #6b7683;">Actual start</div><div style="font-size: 13px; font-weight: 600; margin-top: 3px;">04 Sep 2026</div></div>
+                    <div><div style="font-size: 11px; color: #6b7683;">Source</div><div style="font-size: 13px; font-weight: 600; margin-top: 3px;">Supervisor note</div></div>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 7px;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6b7683;">MATCHING SIGNALS</div>
+                    <sc-for list="{{ signals }}" as="g" hint-placeholder-count="4">
+                      <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #26303c;">
+                        <span style="color: #1f7a45; font-weight: 600;">✓</span>{{ g }}
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="padding: 12px 14px; background: #fdf7ec; border: 1px solid #f0dfbc; border-radius: 6px; font-size: 12px; line-height: 1.55; color: #6b5423;">Status: <strong>Awaiting planner validation.</strong> Confidence is the AI's own certainty about the match — not proof the work happened.</div>
+                  <div onClick="{{ goPlannerFromSubmit }}" style="padding: 12px 14px; border: 1px solid #d6e2f7; border-radius: 6px; display: flex; align-items: center; gap: 10px; cursor: pointer; background: #fbfcfd;" style-hover="border-color: #2c5cc5;">
+                    <div style="font-size: 12px; color: #3d4854;">Next in the demo flow: planner reviews this mapping</div>
+                    <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2c5cc5; white-space: nowrap;">GO →</div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ idle }}" hint-placeholder-val="{{ true }}">
+              <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+                <div style="font-size: 14px; font-weight: 600;">What TIME AGENT does with this</div>
+                <sc-for list="{{ explain }}" as="e" hint-placeholder-count="4">
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2c5cc5; padding-top: 2px;">{{ e.n }}</div>
+                    <div style="font-size: 12px; line-height: 1.55; color: #3d4854;">{{ e.text }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.updates }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; overflow-x: auto;">
+          <div style="padding: 14px 18px; border-bottom: 1px solid #e4e7ec; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <sc-for list="{{ updateFilters }}" as="f" hint-placeholder-count="4">
+              <select style="padding: 7px 10px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 12px; background: #fbfcfd;"><option>{{ f }}</option></select>
+            </sc-for>
+            <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7683;">{{ fieldUpdates.length }} UPDATES</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 110px minmax(240px, 2.2fr) 130px 150px 120px; min-width: 860px; gap: 0; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #6b7683; padding: 10px 18px; border-bottom: 1px solid #e4e7ec; background: #fafbfc;">
+            <div>RECEIVED</div><div>FIELD UPDATE</div><div>SOURCE</div><div>AI MATCH</div><div>STATUS</div>
+          </div>
+          <sc-for list="{{ fieldUpdates }}" as="u" hint-placeholder-count="6">
+            <div style="display: grid; grid-template-columns: 110px minmax(240px, 2.2fr) 130px 150px 120px; min-width: 860px; gap: 0; padding: 14px 18px; border-bottom: 1px solid #f0f2f5; align-items: center;" style-hover="background: #fafbfc;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7683;">{{ u.time }}</div>
+              <div style="min-width: 0; padding-right: 18px;">
+                <div style="font-size: 13px; line-height: 1.5; color: #26303c;">{{ u.text }}</div>
+                <div style="font-size: 11px; color: #8a929c; margin-top: 3px;">{{ u.author }}</div>
+              </div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5b6672;">{{ u.source }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2c5cc5;">{{ u.match }}</div>
+              <div><span style="font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 3px; background: {{ u.statusBg }}; color: {{ u.statusColor }};">{{ u.status }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.plannerDash }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px;">
+          <sc-for list="{{ plannerStats }}" as="s" hint-placeholder-count="5">
+            <div onClick="{{ s.go }}" style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 16px; cursor: pointer;" style-hover="border-color: #2c5cc5;">
+              <div style="font-size: 12px; color: #6b7683;">{{ s.label }}</div>
+              <div style="font-size: 30px; font-weight: 600; margin-top: 8px; color: {{ s.color }};">{{ s.value }}</div>
+              <div style="font-size: 12px; color: #8a929c; margin-top: 4px;">{{ s.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+          <div style="display: flex; flex-direction: column; gap: 20px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px;">
+              <div style="padding: 15px 18px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center;">
+                <div style="font-size: 14px; font-weight: 600;">Pending validation queue</div>
+                <div onClick="{{ goRecon }}" style="margin-left: auto; font-size: 12px; color: #2c5cc5; cursor: pointer;">Open AI Reconciliation</div>
+              </div>
+              <sc-for list="{{ pendingQueue }}" as="r" hint-placeholder-count="3">
+                <div onClick="{{ r.open }}" style="padding: 15px 18px; border-bottom: 1px solid #f0f2f5; display: flex; gap: 16px; align-items: center; cursor: pointer;" style-hover="background: #fafbfc;">
+                  <div style="min-width: 0; display: flex; flex-direction: column; gap: 5px;">
+                    <div style="font-size: 13px; color: #26303c; line-height: 1.5;">{{ r.update }}</div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2c5cc5;">{{ r.actId }}</span>
+                      <span style="font-size: 12px; color: #5b6672;">{{ r.actName }}</span>
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 6px; border-radius: 3px; background: #f0f2f5; color: #5b6672;">{{ r.event }}</span>
+                    </div>
+                  </div>
+                  <div style="margin-left: auto; text-align: right; white-space: nowrap;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: {{ r.confColor }};">{{ r.conf }}%</div>
+                    <div style="font-size: 10px; color: #8a929c;">{{ r.confLevel }} confidence</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 14px;">
+              <div style="display: flex; align-items: center;">
+                <div style="font-size: 14px; font-weight: 600;">Planned vs actual — piping package</div>
+                <div style="margin-left: auto; display: flex; gap: 14px; align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #5b6672;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #c9d2dd;"></span>Planned</div>
+                  <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #5b6672;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #2c5cc5;"></span>Actual</div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: flex-end; gap: 14px; height: 150px;">
+                <sc-for list="{{ curve }}" as="c" hint-placeholder-count="6">
+                  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px;">
+                    <div style="width: 100%; display: flex; align-items: flex-end; gap: 3px; height: 120px;">
+                      <div style="flex: 1; background: #c9d2dd; border-radius: 2px 2px 0 0; height: {{ c.pH }};"></div>
+                      <div style="flex: 1; background: #2c5cc5; border-radius: 2px 2px 0 0; height: {{ c.aH }};"></div>
+                    </div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8a929c;">{{ c.week }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid #f0dfbc; border-radius: 7px; overflow: hidden;">
+              <div style="background: #fdf7ec; padding: 12px 16px; border-bottom: 1px solid #f0dfbc; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #8a5a00;">BREAKDOWN DETECTED</div>
+              <div style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+                <div style="font-size: 13px; line-height: 1.55; color: #26303c;">Field execution under <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;">PIP-100 Piping Work</span> appears more granular than the baseline activity — 3 sub-activities detected.</div>
+                <div onClick="{{ goBreakdown }}" style="padding: 10px 14px; border-radius: 5px; background: #101720; color: #fff; font-size: 13px; font-weight: 500; text-align: center; cursor: pointer;" style-hover="background: #26303c;">Review breakdown</div>
+                <div style="font-size: 11px; color: #8a929c;">Official schedule is untouched until you approve.</div>
+              </div>
+            </div>
+
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px;">
+              <div style="padding: 15px 18px; border-bottom: 1px solid #e4e7ec; font-size: 14px; font-weight: 600;">Unmatched updates</div>
+              <sc-for list="{{ unmatched }}" as="u" hint-placeholder-count="2">
+                <div style="padding: 13px 18px; border-bottom: 1px solid #f0f2f5;">
+                  <div style="font-size: 13px; color: #26303c; line-height: 1.5;">{{ u.text }}</div>
+                  <div style="display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap;">
+                    <span style="font-size: 11px; color: #b3261e;">{{ u.reason }}</span>
+                    <span style="font-size: 11px; color: #2c5cc5; cursor: pointer;">Map manually</span>
+                    <span style="font-size: 11px; color: #2c5cc5; cursor: pointer;">Ask supervisor</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px;">
+              <div style="padding: 15px 18px; border-bottom: 1px solid #e4e7ec; font-size: 14px; font-weight: 600;">Top delay reasons this week</div>
+              <sc-for list="{{ delayReasons }}" as="d" hint-placeholder-count="4">
+                <div style="padding: 12px 18px; border-bottom: 1px solid #f0f2f5; display: flex; align-items: center; gap: 12px;">
+                  <div style="font-size: 13px; color: #26303c;">{{ d.label }}</div>
+                  <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #5b6672;">{{ d.count }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.recon }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid #d6e2f7; border-radius: 7px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2c5cc5;">AI CONFIDENCE ≠ CERTAINTY</div>
+          <div style="font-size: 12px; color: #3d4854;">Confidence scores how sure TIME AGENT is that the field text refers to this schedule activity. A planner decision is always required before anything syncs.</div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; overflow-x: auto;">
+          <div style="padding: 14px 18px; border-bottom: 1px solid #e4e7ec; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <sc-for list="{{ reconFilters }}" as="f" hint-placeholder-count="6">
+              <select style="padding: 7px 10px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 12px; background: #fbfcfd;"><option>{{ f }}</option></select>
+            </sc-for>
+            <div style="margin-left: auto; display: flex; gap: 8px;">
+              <div onClick="{{ approveAllHigh }}" style="padding: 8px 12px; border-radius: 5px; background: #2c5cc5; color: #fff; font-size: 12px; font-weight: 500; cursor: pointer;" style-hover="background: #1e429b;">Approve all high-confidence</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: minmax(260px, 2fr) minmax(180px, 1.5fr) 100px 110px 120px 190px; min-width: 1080px; padding: 10px 18px; border-bottom: 1px solid #e4e7ec; background: #fafbfc; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #6b7683;">
+            <div>FIELD UPDATE</div><div>AI MATCH</div><div>CONFIDENCE</div><div>EVENT</div><div>STATUS</div><div>ACTION</div>
+          </div>
+          <sc-for list="{{ reconRows }}" as="r" hint-placeholder-count="5">
+            <div style="display: grid; grid-template-columns: minmax(260px, 2fr) minmax(180px, 1.5fr) 100px 110px 120px 190px; min-width: 1080px; padding: 14px 18px; border-bottom: 1px solid #f0f2f5; align-items: center;" style-hover="background: #fafbfc;">
+              <div style="padding-right: 18px; min-width: 0;">
+                <div style="font-size: 13px; line-height: 1.5; color: #26303c;">{{ r.update }}</div>
+                <div style="font-size: 11px; color: #8a929c; margin-top: 3px;">{{ r.meta }}</div>
+              </div>
+              <div style="padding-right: 14px; min-width: 0;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2c5cc5;">{{ r.actId }}</div>
+                <div style="font-size: 12px; color: #26303c; margin-top: 2px;">{{ r.actName }}</div>
+              </div>
+              <div>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: {{ r.confBg }}; color: {{ r.confColor }};">{{ r.conf }}% {{ r.confLevel }}</span>
+              </div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: {{ r.eventColor }};">{{ r.event }}</div>
+              <div><span style="font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 3px; background: {{ r.statusBg }}; color: {{ r.statusColor }};">{{ r.status }}</span></div>
+              <div style="display: flex; gap: 7px; flex-wrap: wrap;">
+                <div onClick="{{ r.open }}" style="padding: 6px 10px; border: 1px solid #d5dae1; border-radius: 4px; font-size: 11px; cursor: pointer;" style-hover="border-color: #2c5cc5; color: #2c5cc5;">Review</div>
+                <div onClick="{{ r.approve }}" style="padding: 6px 10px; border-radius: 4px; background: #eef2f9; color: #2c5cc5; font-size: 11px; font-weight: 500; cursor: pointer;" style-hover="background: #e0e8f6;">Approve</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.breakdown }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+          <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 20px; display: flex; flex-direction: column; gap: 20px; min-width: 0;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6b7683;">BASELINE ACTIVITY · SYSTEM OF RECORD</div>
+              <div style="border: 1px solid #d5dae1; border-radius: 6px; padding: 16px; background: #fbfcfd; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+                <div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #5b6672;">PIP-100</div>
+                  <div style="font-size: 16px; font-weight: 600; margin-top: 2px;">Piping Work</div>
+                </div>
+                <div style="margin-left: auto; display: flex; gap: 26px;">
+                  <div><div style="font-size: 11px; color: #6b7683;">Planned start</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 3px;">01 SEP 2026</div></div>
+                  <div><div style="font-size: 11px; color: #6b7683;">Planned finish</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 3px;">07 SEP 2026</div></div>
+                  <div><div style="font-size: 11px; color: #6b7683;">Duration</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 3px;">7 d</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2c5cc5;">AI-DETECTED FIELD BREAKDOWN</div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 7px; border-radius: 3px; background: #f2f6fd; color: #2c5cc5;">NOT YET IN SCHEDULE</div>
+              </div>
+              <div style="border: 1px solid #d6e2f7; border-radius: 6px; background: #f8fafd; padding: 6px 0;">
+                <sc-for list="{{ breakdownRows }}" as="b" hint-placeholder-count="3">
+                  <div style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid #eaeff7; flex-wrap: wrap;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #9aa5b1;">{{ b.tree }}</div>
+                    <div style="min-width: 0;">
+                      <div style="font-size: 14px; font-weight: 600;">{{ b.name }}</div>
+                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7683; margin-top: 3px;">{{ b.dates }} · {{ b.crew }}</div>
+                    </div>
+                    <div style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
+                      <div style="width: 110px; height: 8px; background: #e4e7ec; border-radius: 4px; overflow: hidden;">
+                        <div style="height: 100%; background: #2c5cc5; width: {{ b.progress }};"></div>
+                      </div>
+                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; width: 42px; text-align: right;">{{ b.progress }}</div>
+                      <div style="font-size: 11px; color: #2c5cc5; cursor: pointer;">Edit</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-size: 13px; line-height: 1.6; color: #3d4854; padding: 12px 14px; background: #fdf7ec; border: 1px solid #f0dfbc; border-radius: 6px;">“Field execution appears more granular than the baseline activity.” Three distinct work fronts were reported under one baseline activity across 6 updates from 2 supervisors.</div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-top: 1px solid #f0f2f5; padding-top: 18px;">
+              <button onClick="{{ approveBreakdown }}" style="padding: 11px 16px; border: none; border-radius: 5px; background: #2c5cc5; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;" style-hover="background: #1e429b;">Approve breakdown</button>
+              <button style="padding: 11px 16px; border: 1px solid #d5dae1; border-radius: 5px; background: #fff; font-size: 13px; cursor: pointer;" style-hover="border-color: #2c5cc5;">Edit</button>
+              <button style="padding: 11px 16px; border: 1px solid #d5dae1; border-radius: 5px; background: #fff; font-size: 13px; cursor: pointer;" style-hover="border-color: #b3261e; color: #b3261e;">Reject</button>
+              <div style="margin-left: auto; font-size: 12px; color: #8a929c;">Official schedule will not be modified until planner approval.</div>
+            </div>
+
+            <sc-if value="{{ breakdownApproved }}" hint-placeholder-val="{{ false }}">
+              <div style="border: 1px solid #bfe0cc; background: #f1f9f4; border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 8px; animation: ta-rise .3s ease both;">
+                <div style="font-size: 14px; font-weight: 600; color: #1f7a45;">Breakdown approved — 3 child activities created</div>
+                <div style="font-size: 12px; color: #3d4854; line-height: 1.55;">PIP-100.10, PIP-100.20 and PIP-100.30 are linked to parent PIP-100. Actual dates and progress roll up to the parent. Queued for sync to Primavera P6 on next cycle.</div>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="font-size: 14px; font-weight: 600;">Planner options</div>
+              <sc-for list="{{ breakdownOptions }}" as="o" hint-placeholder-count="4">
+                <div style="display: flex; gap: 10px; align-items: flex-start; padding-bottom: 10px; border-bottom: 1px solid #f0f2f5;">
+                  <span style="width: 14px; height: 14px; border-radius: 50%; border: 2px solid {{ o.ring }}; margin-top: 2px; flex: 0 0 14px;"></span>
+                  <div>
+                    <div style="font-size: 13px; font-weight: 500;">{{ o.label }}</div>
+                    <div style="font-size: 12px; color: #6b7683; line-height: 1.5; margin-top: 2px;">{{ o.desc }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 10px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6b7683;">EVIDENCE · 6 FIELD UPDATES</div>
+              <sc-for list="{{ breakdownEvidence }}" as="e" hint-placeholder-count="4">
+                <div style="font-size: 12px; line-height: 1.55; color: #3d4854; padding: 9px 0; border-bottom: 1px solid #f0f2f5;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8a929c;">{{ e.date }}</span> · {{ e.text }}
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.schedule }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 14px 18px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 9px;">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #1f7a45;"></span>
+            <div style="font-size: 13px;">Linked to <strong>Oracle Primavera P6</strong> · 1,248 activities</div>
+          </div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7683;">LAST SYNC 04 SEP 2026, 18:42</div>
+          <div style="margin-left: auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #5b6672;"><span style="width: 14px; height: 8px; border-radius: 2px; background: #c9d2dd;"></span>Planned</div>
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #5b6672;"><span style="width: 14px; height: 8px; border-radius: 2px; background: #2c5cc5;"></span>Actual (approved)</div>
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #5b6672;"><span style="width: 14px; height: 8px; border-radius: 2px; background: #f0dfbc; border: 1px dashed #b07306;"></span>AI-detected, unapproved</div>
+          </div>
+        </div>
+
+        <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; overflow-x: auto;">
+          <div style="display: grid; grid-template-columns: 92px minmax(190px, 1.6fr) 168px 168px 74px 92px 104px minmax(210px, 1.5fr); min-width: 1180px; padding: 10px 18px; background: #fafbfc; border-bottom: 1px solid #e4e7ec; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #6b7683;">
+            <div>ID</div><div>ACTIVITY</div><div>PLANNED</div><div>ACTUAL</div><div>PROG.</div><div>VARIANCE</div><div>STATUS</div><div>01 SEP → 10 SEP</div>
+          </div>
+          <sc-for list="{{ scheduleRows }}" as="s" hint-placeholder-count="6">
+            <div style="display: grid; grid-template-columns: 92px minmax(190px, 1.6fr) 168px 168px 74px 92px 104px minmax(210px, 1.5fr); min-width: 1180px; padding: 13px 18px; border-bottom: 1px solid #f0f2f5; align-items: center;" style-hover="background: #fafbfc;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2c5cc5;">{{ s.id }}</div>
+              <div style="font-size: 13px; padding-right: 14px; min-width: 0; padding-left: {{ s.indent }}; font-weight: {{ s.weight }};">{{ s.name }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5b6672;">{{ s.planned }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #26303c;">{{ s.actual }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px;">{{ s.prog }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: {{ s.varColor }};">{{ s.variance }}</div>
+              <div><span style="font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: {{ s.statusBg }}; color: {{ s.statusColor }};">{{ s.status }}</span></div>
+              <div style="position: relative; height: 26px; min-width: 0;">
+                <div style="position: absolute; left: 0; right: 0; top: 4px; height: 7px; background: #c9d2dd; border-radius: 3px; margin-left: {{ s.pLeft }}; width: {{ s.pWidth }};"></div>
+                <div style="position: absolute; top: 14px; height: 7px; border-radius: 3px; left: {{ s.aLeft }}; width: {{ s.aWidth }}; background: {{ s.aColor }}; border: {{ s.aBorder }};"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font-size: 12px; color: #8a929c;">TIME AGENT writes only planner-approved actuals back to the schedule. Baseline dates, logic and WBS remain owned by Primavera P6.</div>
+      </sc-if>
+
+      <sc-if value="{{ show.pmDash }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+          <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 20px; display: flex; flex-direction: column; gap: 18px;">
+            <div style="font-size: 14px; font-weight: 600;">Overall project progress</div>
+            <div style="display: flex; gap: 34px; flex-wrap: wrap;">
+              <div><div style="font-size: 12px; color: #6b7683;">Planned</div><div style="font-size: 38px; font-weight: 600; line-height: 1.1;">72%</div></div>
+              <div><div style="font-size: 12px; color: #6b7683;">Actual (validated)</div><div style="font-size: 38px; font-weight: 600; line-height: 1.1; color: #2c5cc5;">68%</div></div>
+              <div><div style="font-size: 12px; color: #6b7683;">Schedule variance</div><div style="font-size: 38px; font-weight: 600; line-height: 1.1; color: #b3261e;">−4%</div></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="position: relative; height: 14px; background: #f0f2f5; border-radius: 7px; overflow: hidden;">
+                <div style="position: absolute; inset: 0 auto 0 0; width: 72%; background: #c9d2dd;"></div>
+                <div style="position: absolute; inset: 0 auto 0 0; width: 68%; background: #2c5cc5;"></div>
+              </div>
+              <div style="font-size: 12px; color: #8a929c;">68% of validated actual progress against 72% planned as of 04 Sep 2026.</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px;">
+            <sc-for list="{{ pmStats }}" as="s" hint-placeholder-count="4">
+              <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <div style="font-size: 12px; color: #6b7683;">{{ s.label }}</div>
+                <div style="font-size: 28px; font-weight: 600; color: {{ s.color }};">{{ s.value }}</div>
+                <div style="font-size: 11px; color: #8a929c;">{{ s.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start;">
+          <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 14px;">
+            <div style="font-size: 14px; font-weight: 600;">Discipline performance</div>
+            <sc-for list="{{ disciplines }}" as="d" hint-placeholder-count="5">
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div style="display: flex; align-items: baseline;">
+                  <div style="font-size: 13px;">{{ d.name }}</div>
+                  <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: {{ d.color }};">{{ d.pct }}%</div>
+                </div>
+                <div style="height: 8px; background: #f0f2f5; border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; border-radius: 4px; width: {{ d.w }}; background: {{ d.color }};"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; display: flex; flex-direction: column;">
+            <div style="padding: 15px 18px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center;">
+              <div style="font-size: 14px; font-weight: 600;">Why is the project delayed?</div>
+              <div onClick="{{ goAnalytics }}" style="margin-left: auto; font-size: 12px; color: #2c5cc5; cursor: pointer;">Full analysis</div>
+            </div>
+            <sc-for list="{{ delayDrivers }}" as="d" hint-placeholder-count="4">
+              <div onClick="{{ d.drill }}" style="padding: 13px 18px; border-bottom: 1px solid #f0f2f5; display: flex; align-items: center; gap: 12px; cursor: pointer;" style-hover="background: #fafbfc;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8a929c;">{{ d.rank }}</div>
+                <div style="font-size: 13px; color: #26303c;">{{ d.label }}</div>
+                <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #b3261e;">{{ d.days }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.analytics }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 20px; align-items: start;">
+          <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px;">
+            <div style="padding: 16px 18px; border-bottom: 1px solid #e4e7ec;">
+              <div style="font-size: 14px; font-weight: 600;">Top delay drivers</div>
+              <div style="font-size: 12px; color: #6b7683; margin-top: 3px;">Derived from delay reasons in validated field updates. Select one to drill down.</div>
+            </div>
+            <sc-for list="{{ delayDrivers }}" as="d" hint-placeholder-count="4">
+              <div onClick="{{ d.drill }}" style="padding: 15px 18px; border-bottom: 1px solid #f0f2f5; display: flex; flex-direction: column; gap: 8px; cursor: pointer; background: {{ d.bg }};" style-hover="background: #fafbfc;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8a929c;">{{ d.rank }}</div>
+                  <div style="font-size: 13px; font-weight: 500;">{{ d.label }}</div>
+                  <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5b6672; white-space: nowrap;">{{ d.count }} updates · {{ d.days }}</div>
+                </div>
+                <div style="height: 8px; background: #f0f2f5; border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; background: #b3261e; opacity: 0.75; width: {{ d.w }};"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px; min-width: 0;">
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px;">
+              <div style="padding: 16px 18px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <div style="font-size: 14px; font-weight: 600;">Affected activities — {{ drill.label }}</div>
+                <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b7683;">{{ drill.summary }}</div>
+              </div>
+              <sc-for list="{{ drill.rows }}" as="r" hint-placeholder-count="3">
+                <div style="padding: 14px 18px; border-bottom: 1px solid #f0f2f5; display: flex; align-items: center; gap: 16px;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2c5cc5; width: 74px; flex: 0 0 74px;">{{ r.id }}</div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 13px; color: #26303c;">{{ r.name }}</div>
+                    <div style="font-size: 11px; color: #8a929c; margin-top: 3px;">{{ r.note }}</div>
+                  </div>
+                  <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #b3261e; white-space: nowrap;">{{ r.slip }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 14px;">
+              <div style="display: flex; align-items: center;">
+                <div style="font-size: 14px; font-weight: 600;">Planned vs validated actual — cumulative</div>
+                <div style="margin-left: auto; display: flex; gap: 14px;">
+                  <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #5b6672;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #c9d2dd;"></span>Planned</div>
+                  <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #5b6672;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #2c5cc5;"></span>Actual</div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: flex-end; gap: 12px; height: 160px;">
+                <sc-for list="{{ curve }}" as="c" hint-placeholder-count="6">
+                  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px;">
+                    <div style="width: 100%; display: flex; align-items: flex-end; gap: 3px; height: 128px;">
+                      <div style="flex: 1; background: #c9d2dd; border-radius: 2px 2px 0 0; height: {{ c.pH }};"></div>
+                      <div style="flex: 1; background: #2c5cc5; border-radius: 2px 2px 0 0; height: {{ c.aH }};"></div>
+                    </div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8a929c;">{{ c.week }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.notifications }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px;">
+          <div style="padding: 15px 18px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <div style="font-size: 14px; font-weight: 600;">Notifications for {{ user.role }}</div>
+            <div style="font-size: 12px; color: #6b7683;">Routing is role-aware — raw field updates never reach the project manager.</div>
+          </div>
+          <sc-for list="{{ notifications }}" as="n" hint-placeholder-count="5">
+            <div style="padding: 15px 18px; border-bottom: 1px solid #f0f2f5; display: flex; gap: 14px; align-items: flex-start;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 3px; white-space: nowrap; background: {{ n.bg }}; color: {{ n.color }};">{{ n.sev }}</div>
+              <div style="min-width: 0;">
+                <div style="font-size: 13px; line-height: 1.55; color: #26303c;">{{ n.text }}</div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8a929c; margin-top: 5px;">{{ n.meta }}</div>
+              </div>
+              <div style="margin-left: auto; font-size: 12px; color: #2c5cc5; cursor: pointer; white-space: nowrap;">{{ n.action }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.audit }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; overflow-x: auto;">
+          <div style="padding: 15px 18px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <div style="font-size: 14px; font-weight: 600;">Audit trail</div>
+            <div style="font-size: 12px; color: #6b7683;">Every AI suggestion, human decision and sync is recorded with its source.</div>
+            <div style="margin-left: auto; font-size: 12px; color: #2c5cc5; cursor: pointer;">Export CSV</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 150px minmax(240px, 2fr) 90px 92px 116px 140px 130px; min-width: 1000px; padding: 10px 18px; background: #fafbfc; border-bottom: 1px solid #e4e7ec; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #6b7683;">
+            <div>TIMESTAMP</div><div>FIELD UPDATE</div><div>ACTIVITY</div><div>AI CONF.</div><div>DECISION</div><div>APPROVED BY</div><div>SOURCE</div>
+          </div>
+          <sc-for list="{{ auditRows }}" as="a" hint-placeholder-count="6">
+            <div style="display: grid; grid-template-columns: 150px minmax(240px, 2fr) 90px 92px 116px 140px 130px; min-width: 1000px; padding: 13px 18px; border-bottom: 1px solid #f0f2f5; align-items: center;" style-hover="background: #fafbfc;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5b6672;">{{ a.ts }}</div>
+              <div style="font-size: 12px; color: #26303c; padding-right: 16px; min-width: 0;">{{ a.update }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2c5cc5;">{{ a.act }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px;">{{ a.conf }}</div>
+              <div><span style="font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: {{ a.bg }}; color: {{ a.color }};">{{ a.decision }}</span></div>
+              <div style="font-size: 12px; color: #26303c;">{{ a.by }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #5b6672;">{{ a.source }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ show.settings }}" hint-placeholder-val="{{ false }}">
+        <div style="display: grid; grid-template-columns: 246px minmax(0, 1fr); gap: 20px; align-items: start;">
+          <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 8px;">
+            <sc-for list="{{ settingsTabs }}" as="t" hint-placeholder-count="7">
+              <div onClick="{{ t.go }}" style="padding: 10px 12px; border-radius: 5px; font-size: 13px; cursor: pointer; background: {{ t.bg }}; color: {{ t.color }}; font-weight: {{ t.weight }};" style-hover="background: #f5f6f8;">{{ t.label }}</div>
+            </sc-for>
+          </div>
+
+          <div style="min-width: 0; display: flex; flex-direction: column; gap: 20px;">
+            <sc-if value="{{ st.integration }}" hint-placeholder-val="{{ true }}">
+              <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 22px; display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <div style="font-size: 17px; font-weight: 600;">Connect project schedule</div>
+                  <div style="font-size: 13px; line-height: 1.6; color: #5b6672; max-width: 680px;">Connect TIME AGENT with your existing project scheduling system. TIME AGENT does not replace your scheduling software — it reconciles field execution against it.</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+                  <div style="border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 14px;">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                      <div style="width: 38px; height: 38px; border-radius: 5px; background: #f0f2f5; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #5b6672;">P6</div>
+                      <div>
+                        <div style="font-size: 14px; font-weight: 600;">Primavera P6</div>
+                        <div style="font-size: 12px; color: #6b7683; margin-top: 2px;">Oracle Primavera P6</div>
+                      </div>
+                      <div style="margin-left: auto; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 3px; background: {{ p6.bg }}; color: {{ p6.color }};">{{ p6.status }}</div>
+                    </div>
+                    <div style="font-size: 12px; line-height: 1.6; color: #5b6672;">Connect your Primavera P6 schedule to synchronize approved actual progress and activity information.</div>
+                    <sc-if value="{{ p6.connected }}" hint-placeholder-val="{{ false }}">
+                      <div style="border-top: 1px solid #f0f2f5; padding-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div><div style="font-size: 11px; color: #6b7683;">Schedule</div><div style="font-size: 12px; font-weight: 500; margin-top: 2px;">500 MW Power Plant</div></div>
+                        <div><div style="font-size: 11px; color: #6b7683;">Activities</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 2px;">1,248</div></div>
+                        <div><div style="font-size: 11px; color: #6b7683;">Last sync</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 2px;">04 SEP 2026, 18:42</div></div>
+                        <div><div style="font-size: 11px; color: #6b7683;">Method</div><div style="font-size: 12px; margin-top: 2px;">API</div></div>
+                      </div>
+                    </sc-if>
+                    <div onClick="{{ openP6 }}" style="padding: 10px 14px; border-radius: 5px; text-align: center; font-size: 13px; font-weight: 500; cursor: pointer; background: {{ p6.btnBg }}; color: {{ p6.btnColor }}; border: 1px solid {{ p6.btnBorder }};" style-hover="opacity: 0.88;">{{ p6.btnLabel }}</div>
+                  </div>
+
+                  <div style="border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 14px;">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                      <div style="width: 38px; height: 38px; border-radius: 5px; background: #f0f2f5; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: #5b6672;">MSP</div>
+                      <div>
+                        <div style="font-size: 14px; font-weight: 600;">Microsoft Project</div>
+                        <div style="font-size: 12px; color: #6b7683; margin-top: 2px;">Microsoft Project / Project Online</div>
+                      </div>
+                      <div style="margin-left: auto; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 3px; background: {{ msp.bg }}; color: {{ msp.color }};">{{ msp.status }}</div>
+                    </div>
+                    <div style="font-size: 12px; line-height: 1.6; color: #5b6672;">Connect Microsoft Project to synchronize approved schedule activity and actual-progress data.</div>
+                    <sc-if value="{{ msp.connected }}" hint-placeholder-val="{{ false }}">
+                      <div style="border-top: 1px solid #f0f2f5; padding-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div><div style="font-size: 11px; color: #6b7683;">Schedule</div><div style="font-size: 12px; font-weight: 500; margin-top: 2px;">500 MW Power Plant</div></div>
+                        <div><div style="font-size: 11px; color: #6b7683;">Activities</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 2px;">1,248</div></div>
+                        <div><div style="font-size: 11px; color: #6b7683;">Last sync</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 2px;">04 SEP 2026, 18:42</div></div>
+                        <div><div style="font-size: 11px; color: #6b7683;">Method</div><div style="font-size: 12px; margin-top: 2px;">Project file import</div></div>
+                      </div>
+                    </sc-if>
+                    <div onClick="{{ openMsp }}" style="padding: 10px 14px; border-radius: 5px; text-align: center; font-size: 13px; font-weight: 500; cursor: pointer; background: {{ msp.btnBg }}; color: {{ msp.btnColor }}; border: 1px solid {{ msp.btnBorder }};" style-hover="opacity: 0.88;">{{ msp.btnLabel }}</div>
+                  </div>
+                </div>
+
+                <div style="border: 1px solid #e4e7ec; border-radius: 7px; padding: 18px; display: flex; flex-direction: column; gap: 14px; background: #fbfcfd;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6b7683;">SYNC DIRECTION</div>
+                  <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <div style="padding: 9px 14px; border: 1px solid #d5dae1; border-radius: 5px; background: #fff; font-size: 13px;">Field actuals</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; color: #9aa5b1;">→</div>
+                    <div style="padding: 9px 14px; border: 1px solid #2c5cc5; border-radius: 5px; background: #f2f6fd; font-size: 13px; font-weight: 600; color: #2c5cc5;">TIME AGENT</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; color: #9aa5b1;">→</div>
+                    <div style="padding: 9px 14px; border: 1px solid #d5dae1; border-radius: 5px; background: #fff; font-size: 13px;">Project schedule</div>
+                  </div>
+                  <div style="font-size: 12px; color: #3d4854;">Only planner-approved updates are synchronized. Baseline dates and schedule logic are never written by TIME AGENT.</div>
+                </div>
+                <div style="font-size: 11px; color: #8a929c;">Prototype note: integrations shown here are mock connections for demonstration. No live connection to any external or government system is made.</div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ st.general }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 22px; display: flex; flex-direction: column; gap: 18px;">
+                <div style="font-size: 17px; font-weight: 600;">General</div>
+                <sc-for list="{{ generalRows }}" as="g" hint-placeholder-count="5">
+                  <div style="display: flex; align-items: center; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #f0f2f5;">
+                    <div style="min-width: 0;">
+                      <div style="font-size: 13px; font-weight: 500;">{{ g.label }}</div>
+                      <div style="font-size: 12px; color: #6b7683; margin-top: 3px;">{{ g.desc }}</div>
+                    </div>
+                    <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 7px 12px; border: 1px solid #d5dae1; border-radius: 5px; background: #fbfcfd; white-space: nowrap;">{{ g.value }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ st.project }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 22px; display: flex; flex-direction: column; gap: 18px;">
+                <div style="font-size: 17px; font-weight: 600;">Project configuration</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+                  <sc-for list="{{ projectFields }}" as="p" hint-placeholder-count="6">
+                    <label style="display: flex; flex-direction: column; gap: 5px;">
+                      <span style="font-size: 11px; font-weight: 500; color: #6b7683;">{{ p.label }}</span>
+                      <input type="text" value="{{ p.value }}" style="padding: 9px 11px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 13px; background: #fbfcfd;" />
+                    </label>
+                  </sc-for>
+                </div>
+                <div style="display: flex flex-direction: column; gap: 8px;">
+                  <div style="font-size: 12px; font-weight: 500; color: #3d4854; margin-bottom: 8px;">Active disciplines</div>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <sc-for list="{{ disciplineChips }}" as="c" hint-placeholder-count="5">
+                      <div style="padding: 7px 12px; border: 1px solid #d6e2f7; border-radius: 14px; font-size: 12px; background: #f2f6fd; color: #2c5cc5;">{{ c }}</div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ st.users }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; overflow-x: auto;">
+                <div style="padding: 18px 22px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center;">
+                  <div style="font-size: 17px; font-weight: 600;">Users &amp; roles</div>
+                  <div style="margin-left: auto; padding: 8px 13px; border-radius: 5px; background: #2c5cc5; color: #fff; font-size: 12px; font-weight: 500; cursor: pointer;">Invite user</div>
+                </div>
+                <div style="display: grid; grid-template-columns: minmax(200px, 1.4fr) 150px minmax(150px, 1fr) 120px; min-width: 700px; padding: 10px 22px; background: #fafbfc; border-bottom: 1px solid #e4e7ec; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #6b7683;">
+                  <div>USER</div><div>ROLE</div><div>SCOPE</div><div>VALIDATION</div>
+                </div>
+                <sc-for list="{{ users }}" as="u" hint-placeholder-count="5">
+                  <div style="display: grid; grid-template-columns: minmax(200px, 1.4fr) 150px minmax(150px, 1fr) 120px; min-width: 700px; padding: 13px 22px; border-bottom: 1px solid #f0f2f5; align-items: center;">
+                    <div style="min-width: 0;">
+                      <div style="font-size: 13px; font-weight: 500;">{{ u.name }}</div>
+                      <div style="font-size: 11px; color: #8a929c;">{{ u.email }}</div>
+                    </div>
+                    <div style="font-size: 12px; color: #26303c;">{{ u.role }}</div>
+                    <div style="font-size: 12px; color: #5b6672;">{{ u.scope }}</div>
+                    <div><span style="font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: {{ u.bg }}; color: {{ u.color }};">{{ u.rights }}</span></div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ st.ai }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 22px; display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <div style="font-size: 17px; font-weight: 600;">AI &amp; reconciliation</div>
+                  <div style="font-size: 13px; color: #5b6672; line-height: 1.6; max-width: 680px;">Control how much TIME AGENT is allowed to do on its own. Regardless of these settings, the AI never edits baseline dates or schedule logic.</div>
+                </div>
+                <div style="border: 1px solid #d6e2f7; border-radius: 6px; background: #f8fafd; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+                  <div style="display: flex; align-items: baseline; gap: 12px;">
+                    <div style="font-size: 13px; font-weight: 600;">Auto-approval confidence threshold</div>
+                    <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 600; color: #2c5cc5;">{{ threshold }}%</div>
+                  </div>
+                  <div style="height: 8px; background: #e4e7ec; border-radius: 4px; overflow: hidden;">
+                    <div style="height: 100%; background: #2c5cc5; width: {{ thresholdW }};"></div>
+                  </div>
+                  <div style="font-size: 12px; color: #3d4854; line-height: 1.55;">{{ thresholdNote }}</div>
+                </div>
+                <sc-for list="{{ aiToggles }}" as="t" hint-placeholder-count="5">
+                  <div style="display: flex; align-items: center; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #f0f2f5;">
+                    <div style="min-width: 0;">
+                      <div style="font-size: 13px; font-weight: 500;">{{ t.label }}</div>
+                      <div style="font-size: 12px; color: #6b7683; margin-top: 3px; line-height: 1.5;">{{ t.desc }}</div>
+                    </div>
+                    <div style="margin-left: auto; width: 40px; height: 22px; border-radius: 11px; padding: 3px; flex: 0 0 40px; background: {{ t.trackBg }}; display: flex; justify-content: {{ t.justify }};">
+                      <div style="width: 16px; height: 16px; border-radius: 50%; background: #fff;"></div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ st.notify }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 22px; display: flex; flex-direction: column; gap: 18px;">
+                <div style="font-size: 17px; font-weight: 600;">Notifications</div>
+                <div style="display: grid; grid-template-columns: minmax(0, 1fr) 90px 90px 90px; gap: 0; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #6b7683; padding-bottom: 10px; border-bottom: 1px solid #e4e7ec;">
+                  <div>EVENT</div><div>SUPERVISOR</div><div>PLANNER</div><div>MANAGER</div>
+                </div>
+                <sc-for list="{{ notifyMatrix }}" as="m" hint-placeholder-count="5">
+                  <div style="display: grid; grid-template-columns: minmax(0, 1fr) 90px 90px 90px; gap: 0; padding-bottom: 12px; border-bottom: 1px solid #f0f2f5; align-items: center;">
+                    <div style="font-size: 13px; color: #26303c;">{{ m.event }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: {{ m.c1 }};">{{ m.sup }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: {{ m.c2 }};">{{ m.pl }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: {{ m.c3 }};">{{ m.pm }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ st.audit }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #fff; border: 1px solid #e4e7ec; border-radius: 7px; padding: 22px; display: flex; flex-direction: column; gap: 18px;">
+                <div style="font-size: 17px; font-weight: 600;">Audit &amp; security</div>
+                <sc-for list="{{ auditSettings }}" as="a" hint-placeholder-count="5">
+                  <div style="display: flex; align-items: center; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #f0f2f5;">
+                    <div style="min-width: 0;">
+                      <div style="font-size: 13px; font-weight: 500;">{{ a.label }}</div>
+                      <div style="font-size: 12px; color: #6b7683; margin-top: 3px; line-height: 1.5;">{{ a.desc }}</div>
+                    </div>
+                    <div style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1f7a45; white-space: nowrap;">{{ a.value }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <sc-if value="{{ drawer.open }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(16, 23, 32, 0.4); z-index: 20; display: flex; justify-content: flex-end;">
+      <div onClick="{{ closeDrawer }}" style="flex: 1;"></div>
+      <div style="width: 520px; max-width: 92vw; background: #fff; height: 100vh; overflow: auto; border-left: 1px solid #e4e7ec; display: flex; flex-direction: column;">
+        <div style="padding: 18px 22px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; background: #fff;">
+          <div>
+            <div style="font-size: 15px; font-weight: 600;">Review AI mapping</div>
+            <div style="font-size: 12px; color: #6b7683; margin-top: 2px;">{{ drawer.received }}</div>
+          </div>
+          <div onClick="{{ closeDrawer }}" style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6b7683; cursor: pointer;">CLOSE ✕</div>
+        </div>
+        <div style="padding: 22px; display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; flex-direction: column; gap: 7px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6b7683;">FIELD UPDATE · {{ drawer.source }}</div>
+            <div style="font-size: 14px; line-height: 1.6; color: #26303c; padding: 14px; border: 1px solid #e4e7ec; border-radius: 6px; background: #fbfcfd;">“{{ drawer.update }}”</div>
+            <div style="font-size: 11px; color: #8a929c;">{{ drawer.author }}</div>
+          </div>
+
+          <div style="border: 1px solid #d6e2f7; border-radius: 6px; overflow: hidden;">
+            <div style="background: #f2f6fd; padding: 11px 15px; border-bottom: 1px solid #d6e2f7; display: flex; align-items: center;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #2c5cc5;">AI EXTRACTION</span>
+              <span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: {{ drawer.confColor }};">{{ drawer.conf }}% {{ drawer.confLevel }}</span>
+            </div>
+            <div style="padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div><div style="font-size: 11px; color: #6b7683;">Activity</div><div style="font-size: 13px; font-weight: 600; margin-top: 3px;">{{ drawer.actName }}</div></div>
+              <div><div style="font-size: 11px; color: #6b7683;">Activity ID</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 3px; color: #2c5cc5;">{{ drawer.actId }}</div></div>
+              <div><div style="font-size: 11px; color: #6b7683;">Event</div><div style="font-size: 13px; font-weight: 600; margin-top: 3px;">{{ drawer.event }}</div></div>
+              <div><div style="font-size: 11px; color: #6b7683;">Date</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 3px;">{{ drawer.date }}</div></div>
+              <div><div style="font-size: 11px; color: #6b7683;">Progress</div><div style="font-size: 13px; font-weight: 600; margin-top: 3px;">{{ drawer.progress }}</div></div>
+              <div><div style="font-size: 11px; color: #6b7683;">Delay reason</div><div style="font-size: 13px; font-weight: 600; margin-top: 3px;">{{ drawer.delay }}</div></div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: #6b7683;">MATCHING SIGNALS</div>
+            <sc-for list="{{ drawer.signals }}" as="s" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; gap: 9px; font-size: 13px; color: #26303c; padding: 7px 0; border-bottom: 1px solid #f0f2f5;">
+                <span style="color: #1f7a45; font-weight: 600;">✓</span>{{ s }}
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="padding: 13px 15px; background: #fdf7ec; border: 1px solid #f0dfbc; border-radius: 6px; font-size: 12px; line-height: 1.55; color: #6b5423;">Approving writes the actual dates and progress to the schedule and records your name in the audit trail. Baseline dates are not changed.</div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button onClick="{{ drawer.approve }}" style="padding: 12px; border: none; border-radius: 5px; background: #2c5cc5; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; grid-column: span 2;" style-hover="background: #1e429b;">Approve &amp; sync</button>
+            <button style="padding: 11px; border: 1px solid #d5dae1; border-radius: 5px; background: #fff; font-size: 13px; cursor: pointer;" style-hover="border-color: #2c5cc5;">Edit mapping</button>
+            <button style="padding: 11px; border: 1px solid #d5dae1; border-radius: 5px; background: #fff; font-size: 13px; cursor: pointer;" style-hover="border-color: #2c5cc5;">Ask supervisor</button>
+            <button style="padding: 11px; border: 1px solid #d5dae1; border-radius: 5px; background: #fff; font-size: 13px; cursor: pointer; grid-column: span 2;" style-hover="border-color: #b3261e; color: #b3261e;">Reject mapping</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ modal.open }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(16, 23, 32, 0.45); z-index: 30; display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <div style="width: 520px; max-width: 100%; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 18px 48px rgba(16, 23, 32, 0.22);">
+        <div style="padding: 18px 22px; border-bottom: 1px solid #e4e7ec; display: flex; align-items: center;">
+          <div style="font-size: 15px; font-weight: 600;">{{ modal.title }}</div>
+          <div onClick="{{ closeModal }}" style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #6b7683; cursor: pointer;">✕</div>
+        </div>
+
+        <sc-if value="{{ modal.form }}" hint-placeholder-val="{{ true }}">
+          <div style="padding: 22px; display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <div style="font-size: 12px; font-weight: 500; color: #3d4854;">Connection method</div>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <sc-for list="{{ modal.methods }}" as="m" hint-placeholder-count="2">
+                  <div onClick="{{ m.go }}" style="flex: 1 1 180px; padding: 12px 14px; border-radius: 6px; cursor: pointer; border: 1px solid {{ m.border }}; background: {{ m.bg }}; display: flex; align-items: center; gap: 10px;">
+                    <span style="width: 14px; height: 14px; border-radius: 50%; border: 2px solid {{ m.ring }}; background: {{ m.fill }}; flex: 0 0 14px;"></span>
+                    <span style="font-size: 13px; font-weight: 500;">{{ m.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <sc-for list="{{ modal.fields }}" as="f" hint-placeholder-count="3">
+                <label style="display: flex; flex-direction: column; gap: 5px;">
+                  <span style="font-size: 12px; font-weight: 500; color: #3d4854;">{{ f.label }}</span>
+                  <input type="text" placeholder="{{ f.placeholder }}" style="padding: 10px 12px; border: 1px solid #d5dae1; border-radius: 5px; font-size: 13px; background: #fbfcfd;" />
+                </label>
+              </sc-for>
+            </div>
+            <div style="font-size: 11px; color: #8a929c; line-height: 1.55;">Prototype: this is a mock connection dialog. No credentials are sent and no external system is contacted.</div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+              <button onClick="{{ closeModal }}" style="padding: 10px 16px; border: 1px solid #d5dae1; border-radius: 5px; background: #fff; font-size: 13px; cursor: pointer;">Cancel</button>
+              <button onClick="{{ doConnect }}" style="padding: 10px 18px; border: none; border-radius: 5px; background: #2c5cc5; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;" style-hover="background: #1e429b;">Connect</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ modal.success }}" hint-placeholder-val="{{ false }}">
+          <div style="padding: 22px; display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: flex; align-items: center; gap: 11px;">
+              <span style="width: 22px; height: 22px; border-radius: 50%; background: #1f7a45; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span>
+              <div style="font-size: 15px; font-weight: 600; color: #1f7a45;">Connection successful</div>
+            </div>
+            <div style="border: 1px solid #e4e7ec; border-radius: 6px; padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; background: #fbfcfd;">
+              <div><div style="font-size: 11px; color: #6b7683;">Schedule</div><div style="font-size: 13px; font-weight: 600; margin-top: 3px;">500 MW Power Plant</div></div>
+              <div><div style="font-size: 11px; color: #6b7683;">Activities</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 3px;">1,248</div></div>
+              <div><div style="font-size: 11px; color: #6b7683;">Last sync</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; margin-top: 3px;">04 SEP 2026, 18:42</div></div>
+              <div><div style="font-size: 11px; color: #6b7683;">Sync direction</div><div style="font-size: 13px; margin-top: 3px;">Approved actuals only</div></div>
+            </div>
+            <div style="font-size: 12px; color: #3d4854; line-height: 1.6;">Only planner-approved updates are synchronized. TIME AGENT will not modify baseline dates, activity logic or the WBS.</div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+              <button onClick="{{ closeModal }}" style="padding: 10px 16px; border: 1px solid #d5dae1; border-radius: 5px; background: #fff; font-size: 13px; cursor: pointer;">Done</button>
+              <button onClick="{{ viewSchedule }}" style="padding: 10px 18px; border: none; border-radius: 5px; background: #101720; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;">View schedule</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 40; background: #101720; color: #fff; padding: 13px 20px; border-radius: 6px; font-size: 13px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(16, 23, 32, 0.25); animation: ta-rise .25s ease both;">
+      <span style="width: 7px; height: 7px; border-radius: 50%; background: #4ea877;"></span>
+      {{ toast }}
+    </div>
+  </sc-if>
+</div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;autoApproveThreshold&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:95,&quot;min&quot;:80,&quot;max&quot;:100,&quot;step&quot;:1,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;AI behaviour&quot;},&quot;showMatchingSignals&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;AI behaviour&quot;}}">
+class Component extends DCLogic {
+  state = {
+    role: null,
+    screen: 'login',
+    method: 'write',
+    text: '',
+    step: -1,
+    result: false,
+    selected: null,
+    breakdownApproved: false,
+    settingsTab: 'integration',
+    modal: null,
+    modalStage: 'form',
+    connMethod: 'api',
+    connected: { p6: false, msp: false },
+    drill: 'crane',
+    feed: [],
+    sending: null,
+    toast: null,
+    rows: [
+      { id: 'r1', update: 'Line 24-XX spool erection started today. Crane was available from 10:30 AM. Around 60% completed.', meta: 'R. Kumar · Unit-1 / Pipe Rack-2 · 04 Sep, 17:12', author: 'Ramesh Kumar · Site Supervisor (Piping)', source: 'Supervisor note', actId: 'PIP-101', actName: 'Erect Line 24-XX', conf: 96, event: 'START', status: 'Pending', date: '04 Sep 2026', progress: '60%', delay: 'Crane unavailable (07:00–10:30)', signals: ['Line number 24-XX matched', 'Discipline matched — Piping', 'Location matched — Unit-1 / Rack-2', 'Semantic activity similarity 0.94'] },
+      { id: 'r2', update: 'Line 25-XX erection completed by 4 PM.', meta: 'R. Kumar · Unit-1 / Pipe Rack-2 · 04 Sep, 16:40', author: 'Ramesh Kumar · Site Supervisor (Piping)', source: 'Daily report', actId: 'PIP-102', actName: 'Erect Line 25-XX', conf: 98, event: 'COMPLETE', status: 'Approved', date: '04 Sep 2026', progress: '100%', delay: '—', signals: ['Line number 25-XX matched', 'Completion phrase detected', 'Discipline matched — Piping', 'Predecessor activity already complete'] },
+      { id: 'r3', update: 'Welding Line 25-XX ongoing, 3 joints of 7 done at end of shift.', meta: 'S. Iyer · Unit-1 / Pipe Rack-2 · 04 Sep, 19:05', author: 'Suresh Iyer · Site Supervisor (Piping)', source: 'Voice update', actId: 'PIP-103', actName: 'Weld Line 25-XX', conf: 94, event: 'PROGRESS', status: 'Pending', date: '04 Sep 2026', progress: '45% (3 of 7 joints)', delay: 'Welding machine maintenance', signals: ['Line number 25-XX matched', 'Quantity basis detected — joints', 'Discipline matched — Piping', 'Semantic activity similarity 0.91'] },
+      { id: 'r4', update: 'Pipe support installation Rack-2 finished, all 18 supports fixed and checked.', meta: 'R. Kumar · Unit-1 / Pipe Rack-2 · 03 Sep, 18:20', author: 'Ramesh Kumar · Site Supervisor (Piping)', source: 'Excel upload', actId: 'PIP-104', actName: 'Install Pipe Supports Rack-2', conf: 89, event: 'COMPLETE', status: 'Review', date: '03 Sep 2026', progress: '100%', delay: '—', signals: ['Rack-2 location matched', 'Quantity 18 matches activity scope', 'Discipline matched — Piping', 'Date inferred from report header'] },
+      { id: 'r5', update: 'Hydrotest preparation for Line 20-XX could not start because test blinds were unavailable.', meta: 'S. Iyer · Unit-1 / Test Bay · 04 Sep, 18:50', author: 'Suresh Iyer · Site Supervisor (Piping)', source: 'Supervisor note', actId: 'PIP-105', actName: 'Prepare Hydrotest Line 20-XX', conf: 97, event: 'BLOCKED', status: 'Pending', date: '04 Sep 2026', progress: '0%', delay: 'Test blinds unavailable', signals: ['Line number 20-XX matched', 'Blocker phrase detected', 'Material shortage classified', 'Semantic activity similarity 0.95'] }
+    ]
+  };
+
+  navDefs = {
+    supervisor: [['Dashboard', 'sup-dash'], ['Submit Update', 'submit'], ['My Updates', 'updates'], ['Notifications', 'notifications'], ['Settings', 'settings']],
+    planner: [['Dashboard', 'planner-dash'], ['Field Updates', 'updates'], ['AI Reconciliation', 'recon'], ['Activity Breakdown', 'breakdown'], ['Schedule', 'schedule'], ['Analytics', 'analytics'], ['Audit Trail', 'audit'], ['Notifications', 'notifications'], ['Settings', 'settings']],
+    manager: [['Dashboard', 'pm-dash'], ['Schedule', 'schedule'], ['Delay Analysis', 'analytics'], ['Audit Trail', 'audit'], ['Notifications', 'notifications'], ['Settings', 'settings']]
+  };
+
+  titles = {
+    'sup-dash': ['Field dashboard', 'Ramesh Kumar · Piping · Unit-1 / Pipe Rack-2 · Day shift'],
+    'submit': ['Submit field update', 'Describe the work — TIME AGENT finds the schedule activity'],
+    'updates': ['Field updates', 'Everything received from site, with its AI match and validation state'],
+    'planner-dash': ['Planner dashboard', 'Validate AI mappings and keep the schedule trustworthy'],
+    'recon': ['AI reconciliation', 'Field updates matched to schedule activities — planner decision required'],
+    'breakdown': ['Activity breakdown detection', 'Field execution is more granular than the baseline activity'],
+    'schedule': ['Schedule', 'Planned vs validated actuals · read/write layer over Primavera P6'],
+    'pm-dash': ['Project overview', '500 MW Power Plant · ABC Engineering · as of 04 Sep 2026'],
+    'analytics': ['Delay analysis', 'Why the project is behind, traced to validated field evidence'],
+    'notifications': ['Notifications', 'Role-aware alerts'],
+    'audit': ['Audit trail', 'Traceability for every AI suggestion and human decision'],
+    'settings': ['Settings', 'Project, roles, AI behaviour and schedule integration']
+  };
+
+  users = {
+    supervisor: { name: 'Ramesh Kumar', role: 'Site Supervisor', initials: 'RK' },
+    planner: { name: 'Priya Sharma', role: 'Planner', initials: 'PS' },
+    manager: { name: 'Arun Menon', role: 'Project Manager', initials: 'AM' }
+  };
+
+  STORE = 'timeagent.demo.v1';
+
+  componentDidMount() {
+    try {
+      const raw = window.localStorage.getItem(this.STORE);
+      if (raw) this.setState(JSON.parse(raw));
+    } catch (e) {}
+  }
+
+  componentDidUpdate() {
+    try {
+      const s = this.state;
+      window.localStorage.setItem(this.STORE, JSON.stringify({
+        role: s.role, screen: s.screen, settingsTab: s.settingsTab, connected: s.connected,
+        breakdownApproved: s.breakdownApproved, feed: s.feed, rows: s.rows, drill: s.drill, method: s.method
+      }));
+    } catch (e) {}
+  }
+
+  samples = [
+    { key: 'auto', tag: 'SAMPLE 1', source: 'SUPERVISOR NOTE', text: 'Line 25-XX erection completed by 4 PM. All 14 spools erected and checked by QC.', why: 'One activity, an unambiguous completion, a quantity that matches the scope — TIME AGENT matches this at high confidence.', actId: 'PIP-102', actName: 'Erect Line 25-XX', event: 'COMPLETE', conf: 98, progress: '100%', date: '04 Sep 2026' },
+    { key: 'human', tag: 'SAMPLE 2', source: 'VOICE UPDATE', text: 'Spool erection on Line 24-XX started today. Crane came only at 10:30, roughly 60% done I think.', why: 'Progress is approximate and a delay cause is buried in the sentence — confidence lands below the rule, so a planner must decide.', actId: 'PIP-101', actName: 'Erect Line 24-XX', event: 'PROGRESS', conf: 88, progress: '60% (approximate)', date: '04 Sep 2026' }
+  ];
+
+  send = (key) => () => {
+    if (this.state.sending) return;
+    this.setState({ sending: key, step: 0 });
+    [1, 2, 3].forEach((i) => setTimeout(() => this.setState({ step: i }), i * 650));
+    setTimeout(() => {
+      const sp = this.samples.find((x) => x.key === key);
+      const th = this.props.autoApproveThreshold ?? 95;
+      const auto = sp.conf >= th;
+      const d = new Date();
+      const ts = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+      this.setState((s) => ({
+        sending: null, step: -1,
+        feed: [Object.assign({}, sp, { uid: key + '-' + Date.now(), ts, auto, status: auto ? 'Auto-approved & synced' : 'Awaiting planner' })].concat(s.feed)
+      }));
+      this.flash(auto
+        ? 'Matched at ' + sp.conf + '% — auto-approved under the ' + th + '% rule and logged.'
+        : 'Sent — ' + sp.conf + '% confidence needs planner validation.');
+    }, 2500);
+  };
+
+  feedAct = (uid, status, note) => () => {
+    this.setState((s) => ({ feed: s.feed.map((f) => (f.uid === uid ? Object.assign({}, f, { status: status }) : f)) }));
+    this.flash(note);
+  };
+
+  replyQuestion = (uid) => () => {
+    this.setState((s) => ({ feed: s.feed.map((f) => (f.uid === uid ? Object.assign({}, f, { status: 'Awaiting planner', conf: 96, progress: '60% at Rack-2 (confirmed)', clarified: true }) : f)) }));
+    this.flash('Reply sent — confidence raised to 96% after supervisor confirmation.');
+  };
+
+  resetDemo = () => { this.setState({ feed: [], sending: null, step: -1, toast: null }); };
+
+  go = (screen) => () => this.setState({ screen, selected: null });
+  loginAs = (role) => () => {
+    const first = { supervisor: 'sup-dash', planner: 'planner-dash', manager: 'pm-dash', split: 'split' }[role];
+    this.setState({ role, screen: first, result: false, step: -1, selected: null });
+  };
+
+  flash(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: null }), 3200);
+  }
+
+  analyze = () => {
+    this.setState({ step: 0, result: false });
+    [1, 2, 3].forEach((i) => setTimeout(() => this.setState({ step: i }), i * 700));
+    setTimeout(() => this.setState({ step: 4, result: true }), 2900);
+  };
+
+  approve = (id) => () => {
+    this.setState((s) => ({
+      rows: s.rows.map((r) => (r.id === id ? Object.assign({}, r, { status: 'Approved' }) : r)),
+      selected: null
+    }));
+    this.flash('Approved and queued for schedule sync — recorded in audit trail.');
+  };
+
+  approveAllHigh = () => {
+    const th = this.props.autoApproveThreshold ?? 95;
+    this.setState((s) => ({ rows: s.rows.map((r) => (r.conf >= th && r.status === 'Pending' ? Object.assign({}, r, { status: 'Approved' }) : r)) }));
+    this.flash('High-confidence mappings approved · ' + th + '%+ threshold');
+  };
+
+  confStyle(c) {
+    if (c >= 95) return { level: 'High', color: '#1f7a45', bg: '#f1f9f4' };
+    if (c >= 90) return { level: 'Medium', color: '#8a5a00', bg: '#fdf7ec' };
+    return { level: 'Low', color: '#b3261e', bg: '#fdeeee' };
+  }
+
+  statusStyle(s) {
+    const m = {
+      Approved: ['#f1f9f4', '#1f7a45'], Pending: ['#fdf7ec', '#8a5a00'], Review: ['#f2f6fd', '#2c5cc5'],
+      Completed: ['#f1f9f4', '#1f7a45'], Delayed: ['#fdeeee', '#b3261e'], Blocked: ['#fdeeee', '#b3261e'],
+      'In Progress': ['#f2f6fd', '#2c5cc5'], Synced: ['#f1f9f4', '#1f7a45'], Rejected: ['#fdeeee', '#b3261e'],
+      'Auto-approved & synced': ['#f1f9f4', '#1f7a45'], 'Approved & synced': ['#f1f9f4', '#1f7a45'],
+      'Awaiting planner': ['#fdf7ec', '#8a5a00'], 'Question sent to site': ['#f2f6fd', '#2c5cc5']
+    };
+    const v = m[s] || ['#f0f2f5', '#5b6672'];
+    return { bg: v[0], color: v[1] };
+  }
+
+  eventColor(e) {
+    return { START: '#2c5cc5', COMPLETE: '#1f7a45', PROGRESS: '#2c5cc5', BLOCKED: '#b3261e' }[e] || '#3d4854';
+  }
+
+  drillData = {
+    crane: { label: 'Crane availability', summary: '11 updates · 6 activities affected', rows: [
+      { id: 'PIP-101', name: 'Erect Line 24-XX', note: 'Crane released only at 10:30 on 02 and 04 Sep', slip: '+2 d' },
+      { id: 'PIP-107', name: 'Erect Line 26-XX', note: 'Waiting for 80T crawler crane', slip: '+3 d' },
+      { id: 'STR-220', name: 'Erect Pipe Rack-3 Steel', note: 'Shared crane with boiler area', slip: '+1 d' }
+    ]},
+    material: { label: 'Material availability', summary: '9 updates · 5 activities affected', rows: [
+      { id: 'PIP-105', name: 'Prepare Hydrotest Line 20-XX', note: 'Test blinds not issued from stores', slip: '+3 d' },
+      { id: 'PIP-112', name: 'Erect Line 31-XX', note: 'Spools 4 of 12 pending from fabrication yard', slip: '+2 d' },
+      { id: 'ELE-310', name: 'Cable Tray Unit-1 Level 3', note: 'Tray sections short by 40 m', slip: '+1 d' }
+    ]},
+    welding: { label: 'Welding machine maintenance', summary: '6 updates · 3 activities affected', rows: [
+      { id: 'PIP-103', name: 'Weld Line 25-XX', note: '2 machines down on 03–04 Sep', slip: '+1 d' },
+      { id: 'PIP-108', name: 'Weld Line 26-XX', note: 'Welder deployment shifted to Line 25-XX', slip: '+1 d' }
+    ]},
+    blinds: { label: 'Test blinds unavailable', summary: '4 updates · 2 activities affected', rows: [
+      { id: 'PIP-105', name: 'Prepare Hydrotest Line 20-XX', note: 'Blocked since 03 Sep', slip: '+3 d' },
+      { id: 'PIP-106', name: 'Hydrotest Line 20-XX', note: 'Successor of PIP-105', slip: '+3 d' }
+    ]}
+  };
+
+  renderVals() {
+    const s = this.state;
+    const role = s.role;
+    const scr = s.screen;
+    const th = this.props.autoApproveThreshold ?? 95;
+    const showSignals = this.props.showMatchingSignals ?? true;
+    const nav = (this.navDefs[role] || []).map(([label, key]) => ({
+      label, key,
+      go: this.go(key),
+      bg: scr === key ? '#1b2531' : 'transparent',
+      color: scr === key ? '#ffffff' : '#9aa5b1',
+      weight: scr === key ? '600' : '400',
+      dot: scr === key ? '#7fa4ea' : '#3d4854',
+      count: key === 'recon' ? String(s.rows.filter((r) => r.status !== 'Approved').length) : (key === 'breakdown' && !s.breakdownApproved ? '1' : null)
+    }));
+    const t = this.titles[scr] || ['', ''];
+
+    const rows = s.rows.map((r) => {
+      const c = this.confStyle(r.conf);
+      const st = this.statusStyle(r.status);
+      return Object.assign({}, r, {
+        confLevel: c.level, confColor: c.color, confBg: c.bg,
+        statusBg: st.bg, statusColor: st.color,
+        eventColor: this.eventColor(r.event),
+        open: () => this.setState({ selected: r.id }),
+        approve: this.approve(r.id),
+        autoEligible: r.conf >= th
+      });
+    });
+
+    const sel = rows.find((r) => r.id === s.selected);
+    const dk = s.drill || 'crane';
+    const dd = this.drillData[dk];
+
+    const scheduleRaw = [
+      { id: 'PIP-100', name: 'Piping Work', planned: '01 Sep – 07 Sep', actual: '01 Sep – in progress', prog: '68%', variance: '+2 d', status: 'In Progress', p: [1, 7], a: [1, 7], parent: true, ai: false },
+      { id: 'PIP-101', name: 'Erect Line 24-XX', planned: '01 Sep – 05 Sep', actual: '02 Sep – 07 Sep', prog: '100%', variance: '+2 d', status: 'Delayed', p: [1, 5], a: [2, 7], ai: false },
+      { id: 'PIP-102', name: 'Erect Line 25-XX', planned: '02 Sep – 06 Sep', actual: '02 Sep – 04 Sep', prog: '100%', variance: '−2 d', status: 'Completed', p: [2, 6], a: [2, 4], ai: false },
+      { id: 'PIP-103', name: 'Weld Line 25-XX', planned: '05 Sep – 08 Sep', actual: '06 Sep – …', prog: '45%', variance: '+1 d', status: 'In Progress', p: [5, 8], a: [6, 8], ai: true },
+      { id: 'PIP-104', name: 'Install Pipe Supports Rack-2', planned: '01 Sep – 03 Sep', actual: '01 Sep – 03 Sep', prog: '100%', variance: '0 d', status: 'Completed', p: [1, 3], a: [1, 3], ai: false },
+      { id: 'PIP-105', name: 'Prepare Hydrotest Line 20-XX', planned: '06 Sep – 09 Sep', actual: 'not started', prog: '0%', variance: '+3 d', status: 'Blocked', p: [6, 9], a: null, ai: false }
+    ];
+    const scheduleRows = scheduleRaw.map((r) => {
+      const st = this.statusStyle(r.status);
+      const pct = (d) => ((d - 1) * 10) + '%';
+      return {
+        id: r.id, name: r.name, planned: r.planned, actual: r.actual, prog: r.prog, variance: r.variance, status: r.status,
+        statusBg: st.bg, statusColor: st.color,
+        varColor: r.variance.indexOf('+') === 0 ? '#b3261e' : (r.variance.indexOf('−') === 0 ? '#1f7a45' : '#5b6672'),
+        indent: r.parent ? '0px' : '14px', weight: r.parent ? '600' : '400',
+        pLeft: pct(r.p[0]), pWidth: ((r.p[1] - r.p[0] + 1) * 10) + '%',
+        aLeft: r.a ? pct(r.a[0]) : '0%', aWidth: r.a ? ((r.a[1] - r.a[0] + 1) * 10) + '%' : '0%',
+        aColor: r.ai ? '#f0dfbc' : '#2c5cc5', aBorder: r.ai ? '1px dashed #b07306' : 'none'
+      };
+    });
+
+    const notifSets = {
+      supervisor: [
+        { sev: 'CRITICAL', text: 'Hydrotest preparation for Line 20-XX blocked — test blinds unavailable. Store team notified.', meta: '04 SEP 18:52 · PIP-105', action: 'View update' },
+        { sev: 'WARNING', text: 'TIME AGENT needs a clarification on your support installation note — which rack?', meta: '04 SEP 17:40 · PIP-104', action: 'Answer' },
+        { sev: 'INFO', text: 'Your update on Line 25-XX erection was approved by Priya Sharma.', meta: '04 SEP 17:05 · PIP-102', action: 'View' },
+        { sev: 'INFO', text: 'Daily progress report for 03 Sep processed — 4 activities matched.', meta: '04 SEP 08:10 · Excel upload', action: 'View' }
+      ],
+      planner: [
+        { sev: 'WARNING', text: '5 field updates require validation before today\u2019s schedule cut-off.', meta: '04 SEP 19:10 · AI Reconciliation', action: 'Validate' },
+        { sev: 'WARNING', text: 'TIME AGENT detected a possible activity breakdown under PIP-100 Piping Work.', meta: '04 SEP 18:30 · 3 sub-activities', action: 'Review' },
+        { sev: 'CRITICAL', text: 'PIP-105 blocked for 3 days — successor PIP-106 hydrotest now on critical path.', meta: '04 SEP 18:55 · Critical path', action: 'Open activity' },
+        { sev: 'INFO', text: '2 updates could not be matched to any activity and need manual mapping.', meta: '04 SEP 16:20 · Unmatched', action: 'Map' },
+        { sev: 'INFO', text: 'Primavera P6 sync completed — 11 approved actuals written.', meta: '04 SEP 18:42 · P6', action: 'View log' }
+      ],
+      manager: [
+        { sev: 'CRITICAL', text: 'Piping package is 4% behind plan; 7 activities are on critical delay.', meta: '04 SEP 19:00 · Piping', action: 'Open analysis' },
+        { sev: 'WARNING', text: 'Crane availability is the top delay driver this week — 6 activities affected.', meta: '04 SEP 18:00 · Delay driver', action: 'Drill down' },
+        { sev: 'WARNING', text: 'Instrumentation discipline at 79% of planned progress.', meta: '04 SEP 12:00 · Instrumentation', action: 'View' },
+        { sev: 'INFO', text: 'Validated actual progress updated to 68% after planner approvals.', meta: '04 SEP 18:45 · Project', action: 'View' }
+      ]
+    };
+    const sevStyle = { CRITICAL: ['#fdeeee', '#b3261e'], WARNING: ['#fdf7ec', '#8a5a00'], INFO: ['#f2f6fd', '#2c5cc5'] };
+    const notifications = (notifSets[role] || []).map((n) => ({ ...n, bg: sevStyle[n.sev][0], color: sevStyle[n.sev][1] }));
+
+    const settingsKeys = [['general', 'General'], ['project', 'Project Configuration'], ['users', 'Users & Roles'], ['ai', 'AI & Reconciliation'], ['notify', 'Notifications'], ['integration', 'Schedule Integration'], ['audit', 'Audit & Security']];
+    const settingsTabs = settingsKeys.map(([k, label]) => ({
+      label, go: () => this.setState({ settingsTab: k }),
+      bg: s.settingsTab === k ? '#f2f6fd' : 'transparent',
+      color: s.settingsTab === k ? '#2c5cc5' : '#3d4854',
+      weight: s.settingsTab === k ? '600' : '400'
+    }));
+    const st = {};
+    settingsKeys.forEach(([k]) => { st[k] = s.settingsTab === k; });
+
+    const connCard = (key, name) => {
+      const on = s.connected[key];
+      return {
+        connected: on,
+        status: on ? 'Connected' : 'Not Connected',
+        bg: on ? '#f1f9f4' : '#f0f2f5', color: on ? '#1f7a45' : '#5b6672',
+        btnLabel: on ? 'Manage connection' : 'Connect ' + name,
+        btnBg: on ? '#fff' : '#2c5cc5', btnColor: on ? '#3d4854' : '#fff',
+        btnBorder: on ? '#d5dae1' : '#2c5cc5'
+      };
+    };
+
+    const modalIsP6 = s.modal === 'p6';
+    const modalMethods = (modalIsP6 ? [['api', 'API'], ['file', 'Schedule File Import']] : [['api', 'API'], ['file', 'Project File Import']]).map(([k, label]) => ({
+      label, go: () => this.setState({ connMethod: k }),
+      border: s.connMethod === k ? '#2c5cc5' : '#d5dae1',
+      bg: s.connMethod === k ? '#f2f6fd' : '#fff',
+      ring: s.connMethod === k ? '#2c5cc5' : '#c9d2dd',
+      fill: s.connMethod === k ? '#2c5cc5' : 'transparent'
+    }));
+    const modalFields = modalIsP6
+      ? (s.connMethod === 'api'
+        ? [{ label: 'Server / endpoint', placeholder: 'https://p6.abceng.in/p6ws/services' }, { label: 'Username', placeholder: 'planner.integration' }, { label: 'Password / API key', placeholder: '••••••••••••' }]
+        : [{ label: 'Schedule file', placeholder: '500MW_Baseline_R4.xer' }, { label: 'Project / EPS node', placeholder: 'ABCENG.500MW.UNIT1' }, { label: 'Baseline to map against', placeholder: 'Rev 4 — approved 12 Aug 2026' }])
+      : (s.connMethod === 'api'
+        ? [{ label: 'Project Online endpoint', placeholder: 'https://abceng.sharepoint.com/sites/pwa' }, { label: 'Username', placeholder: 'planner@abceng.in' }, { label: 'Password / API key', placeholder: '••••••••••••' }]
+        : [{ label: 'Project file', placeholder: '500MW_Schedule_R4.mpp' }, { label: 'Connection details', placeholder: 'Local file share / SharePoint path' }, { label: 'Baseline to map against', placeholder: 'Baseline 1 — 12 Aug 2026' }]);
+
+    const feedRows = s.feed.map((f) => {
+      const cf = this.confStyle(f.conf);
+      const stt = this.statusStyle(f.status);
+      const pending = f.status === 'Awaiting planner';
+      let plannerNote, supervisorNote;
+      if (f.status === 'Auto-approved & synced') {
+        plannerNote = 'Confidence ' + f.conf + '% is at or above the ' + th + '% rule, so the actual was approved automatically and written to the schedule. It stays in the audit trail for your review.';
+        supervisorNote = 'Matched to ' + f.actId + ' automatically · no action needed';
+      } else if (f.status === 'Approved & synced') {
+        plannerNote = 'You approved this mapping. Actual dates and progress are written to the schedule against ' + f.actId + '; baseline dates unchanged.';
+        supervisorNote = 'Approved by Priya Sharma';
+      } else if (f.status === 'Question sent to site') {
+        plannerNote = 'Clarification requested from Ramesh Kumar. Nothing has been written to the schedule.';
+        supervisorNote = 'Planner needs a clarification — answer above';
+      } else if (f.status === 'Rejected') {
+        plannerNote = 'Rejected — no schedule change. TIME AGENT records the rejection and learns from it.';
+        supervisorNote = 'Not accepted — planner rejected the mapping';
+      } else if (f.clarified) {
+        plannerNote = 'Supervisor confirmed 60% at Rack-2 and the crane release time. Confidence re-scored to ' + f.conf + '% — your decision is still required.';
+        supervisorNote = 'Clarified · back with Priya Sharma for validation';
+      } else {
+        plannerNote = 'Confidence ' + f.conf + '% is below the ' + th + '% rule: progress was stated approximately and a delay cause was detected. Nothing reaches the schedule until you decide.';
+        supervisorNote = 'With Priya Sharma for validation';
+      }
+      return Object.assign({}, f, {
+        confLevel: cf.level.toUpperCase(), confColor: cf.color,
+        statusBg: stt.bg, statusColor: stt.color, pending,
+        cardBorder: pending ? '#f0dfbc' : '#e4e7ec',
+        cardHeadBg: pending ? '#fdf7ec' : '#fafbfc',
+        noteBg: f.auto ? '#f1f9f4' : '#fbfcfd',
+        noteBorder: f.auto ? '#bfe0cc' : '#e4e7ec',
+        plannerNote: plannerNote, supervisorNote: supervisorNote,
+        approve: this.feedAct(f.uid, 'Approved & synced', 'Approved — actual written to ' + f.actId + ' and recorded in the audit trail.'),
+        ask: this.feedAct(f.uid, 'Question sent to site', 'Question sent to Ramesh Kumar on site.'),
+        reject: this.feedAct(f.uid, 'Rejected', 'Mapping rejected — the schedule is untouched.')
+      });
+    });
+    const questioned = feedRows.find((f) => f.status === 'Question sent to site');
+    const autoCount = feedRows.filter((f) => f.auto).length;
+    const pendingCount = feedRows.filter((f) => f.pending).length;
+
+    return {
+      feed: feedRows,
+      feedEmpty: feedRows.length === 0,
+      feedCount: feedRows.length + ' sent',
+      sending: { active: !!s.sending },
+      resetDemo: this.resetDemo,
+      samples: this.samples.map((sp) => ({
+        tag: sp.tag, text: sp.text, why: sp.why,
+        routeLabel: sp.conf >= th ? 'EXPECTED: AUTO-APPROVED (' + sp.conf + '%)' : 'EXPECTED: HUMAN APPROVAL (' + sp.conf + '%)',
+        routeBg: sp.conf >= th ? '#f1f9f4' : '#fdf7ec',
+        routeColor: sp.conf >= th ? '#1f7a45' : '#8a5a00',
+        send: this.send(sp.key),
+        btnLabel: s.sending === sp.key ? 'Sending…' : 'Send from site',
+        btnBg: s.sending ? '#eef2f9' : '#2c5cc5',
+        btnColor: s.sending ? '#2c5cc5' : '#ffffff',
+        btnBorder: s.sending ? '#d6e2f7' : '#2c5cc5'
+      })),
+      splitStats: [
+        { label: 'Received from site', value: String(feedRows.length), color: '#101720' },
+        { label: 'Auto-approved', value: String(autoCount), color: '#1f7a45' },
+        { label: 'Needs your decision', value: String(pendingCount), color: '#8a5a00' }
+      ],
+      question: questioned
+        ? { open: true, text: 'Priya Sharma asks: is the 60% figure for Line 24-XX at Rack-2, and was the crane released at 10:30?', replyLabel: 'Confirm — 60% at Rack-2, crane released 10:30', reply: this.replyQuestion(questioned.uid) }
+        : { open: false },
+      show: {
+        login: !role, app: !!role && role !== 'split', split: role === 'split',
+        supDash: scr === 'sup-dash', submit: scr === 'submit', updates: scr === 'updates',
+        plannerDash: scr === 'planner-dash', recon: scr === 'recon', breakdown: scr === 'breakdown',
+        schedule: scr === 'schedule', pmDash: scr === 'pm-dash', analytics: scr === 'analytics',
+        notifications: scr === 'notifications', audit: scr === 'audit', settings: scr === 'settings'
+      },
+      title: t[0], subtitle: t[1],
+      user: this.users[role] || this.users.planner,
+      nav, logout: () => this.setState({ role: null, screen: 'login' }),
+      goNotifications: this.go('notifications'), goRecon: this.go('recon'), goBreakdown: this.go('breakdown'),
+      goUpdates: this.go('updates'), goAnalytics: this.go('analytics'),
+      alertCount: String((notifSets[role] || []).filter((n) => n.sev !== 'INFO').length),
+
+      pipeline: [
+        { n: '01', label: 'FIELD EXECUTION', note: 'voice, notes, DPR, Excel' },
+        { n: '02', label: 'AI UNDERSTANDING', note: 'extract event, date, quantity' },
+        { n: '03', label: 'ACTIVITY MAPPING', note: 'match to schedule activity' },
+        { n: '04', label: 'HUMAN VALIDATION', note: 'planner approves or edits' },
+        { n: '05', label: 'SCHEDULE UPDATE', note: 'approved actuals only' },
+        { n: '06', label: 'PROJECT ANALYTICS', note: 'variance and delay drivers' }
+      ],
+      demoRoles: [
+        { label: 'Site Supervisor', desc: 'Ramesh Kumar · Piping · Unit-1', initials: 'RK', go: this.loginAs('supervisor') },
+        { label: 'Planner', desc: 'Priya Sharma · Project controls', initials: 'PS', go: this.loginAs('planner') },
+        { label: 'Project Manager', desc: 'Arun Menon · 500 MW Power Plant', initials: 'AM', go: this.loginAs('manager') },
+        { label: 'Dual portal live demo', desc: 'Supervisor and Planner side by side', initials: '2×', go: this.loginAs('split') }
+      ],
+      loginPlanner: this.loginAs('planner'),
+
+      supStats: [
+        { label: 'Updates submitted today', value: '4', note: '2 voice · 1 note · 1 Excel', color: '#101720' },
+        { label: 'Awaiting planner validation', value: '3', note: 'avg. turnaround 2.5 h', color: '#8a5a00' },
+        { label: 'Blockers raised', value: '2', note: '1 critical', color: '#b3261e' }
+      ],
+      recentUpdates: rows.slice(0, 4).map((r) => ({ time: r.meta.slice(-5), text: r.update, source: r.source.toUpperCase(), match: r.actId + ' · ' + r.conf + '% match', status: r.status, statusBg: r.statusBg, statusColor: r.statusColor })),
+      blockers: [
+        { text: 'Test blinds unavailable — hydrotest prep for Line 20-XX could not start.', meta: 'RAISED 04 SEP 18:50 · PIP-105 · CRITICAL', color: '#b3261e' },
+        { text: 'Two welding machines under maintenance; welder crew redeployed.', meta: 'RAISED 03 SEP 20:10 · PIP-103 · WARNING', color: '#b07306' }
+      ],
+
+      methods: [['write', 'Write update'], ['voice', 'Voice update'], ['upload', 'Upload file']].map(([k, label]) => ({
+        label, go: () => this.setState({ method: k }),
+        bg: s.method === k ? '#ffffff' : 'transparent',
+        color: s.method === k ? '#101720' : '#5b6672'
+      })),
+      goSubmitWrite: () => this.setState({ screen: 'submit', method: 'write' }),
+      goSubmitVoice: () => this.setState({ screen: 'submit', method: 'voice' }),
+      goSubmitUpload: () => this.setState({ screen: 'submit', method: 'upload' }),
+      isWrite: s.method === 'write', isVoice: s.method === 'voice', isUpload: s.method === 'upload',
+      text: s.text,
+      onText: (e) => this.setState({ text: e.target.value }),
+      fillExample: () => this.setState({ text: 'Line 24-XX spool erection started today. Crane was available from 10:30 AM. Around 60% completed.' }),
+      analyze: this.analyze,
+      processing: s.step >= 0 && s.step < 4,
+      result: s.result,
+      idle: s.step < 0,
+      steps: ['Understanding update…', 'Extracting activity…', 'Matching schedule…', 'Validating details…'].map((label, i) => ({
+        label,
+        opacity: s.step >= i ? '1' : '0.4',
+        ring: s.step > i ? '#1f7a45' : (s.step === i ? '#2c5cc5' : '#c9d2dd'),
+        fill: s.step > i ? '#1f7a45' : 'transparent',
+        state: s.step > i ? 'DONE' : (s.step === i ? 'RUNNING' : 'QUEUED')
+      })),
+      signals: showSignals ? s.rows[0].signals : [],
+      explain: [
+        { n: '01', text: 'Reads your note as written — no activity IDs, codes or forms required.' },
+        { n: '02', text: 'Extracts the event (start, progress, complete, blocked), date, quantity and delay reason.' },
+        { n: '03', text: 'Matches it to one schedule activity using line number, discipline, location and meaning.' },
+        { n: '04', text: 'Sends the mapping to the planner. Nothing is written to Primavera P6 without approval.' }
+      ],
+      waveform: Array.from({ length: 42 }, (_, i) => ({ h: (18 + Math.round(Math.abs(Math.sin(i * 1.3)) * 22) + (i % 3) * 4) + '%' })),
+      files: [
+        { ext: 'XLSX', name: 'DPR_Piping_03Sep2026.xlsx', rows: '42 rows parsed' },
+        { ext: 'PDF', name: 'Site_Diary_Unit1_03Sep.pdf', rows: '6 entries found' }
+      ],
+      goPlannerFromSubmit: this.loginAs('planner'),
+
+      fieldUpdates: rows.map((r) => ({ time: r.meta.slice(-12), text: r.update, author: r.author, source: r.source.toUpperCase(), match: r.actId + ' · ' + r.conf + '%', status: r.status, statusBg: r.statusBg, statusColor: r.statusColor })),
+      updateFilters: ['All projects', 'All disciplines', 'Last 7 days', 'All sources', 'All statuses'],
+
+      plannerStats: [
+        { label: 'Pending validation', value: String(s.rows.filter((r) => r.status === 'Pending').length), note: 'oldest 3 h ago', color: '#8a5a00', go: this.go('recon') },
+        { label: 'AI-matched today', value: '14', note: '11 high confidence', color: '#101720', go: this.go('recon') },
+        { label: 'Unmatched updates', value: '2', note: 'needs manual mapping', color: '#b3261e', go: this.go('updates') },
+        { label: 'Breakdowns detected', value: s.breakdownApproved ? '0' : '1', note: 'under PIP-100', color: '#2c5cc5', go: this.go('breakdown') },
+        { label: 'Schedule variance', value: '−4%', note: 'piping package', color: '#b3261e', go: this.go('schedule') }
+      ],
+      pendingQueue: rows.filter((r) => r.status !== 'Approved').slice(0, 3),
+      curve: [
+        { week: 'W31', pH: '22%', aH: '20%' }, { week: 'W32', pH: '38%', aH: '35%' },
+        { week: 'W33', pH: '52%', aH: '46%' }, { week: 'W34', pH: '68%', aH: '60%' },
+        { week: 'W35', pH: '84%', aH: '76%' }, { week: 'W36', pH: '100%', aH: '92%' }
+      ],
+      unmatched: [
+        { text: '“Grouting work near boiler area finished, need clearance from QC.”', reason: 'No matching activity in Civil WBS' },
+        { text: '“Support installation at rack completed today.”', reason: 'Ambiguous — Rack-2 or Rack-4' }
+      ],
+      delayReasons: [
+        { label: 'Crane availability', count: '11 updates' }, { label: 'Material availability', count: '9 updates' },
+        { label: 'Welding machine maintenance', count: '6 updates' }, { label: 'Test blinds unavailable', count: '4 updates' }
+      ],
+
+      reconRows: rows, reconFilters: ['All projects', 'Piping', 'Last 7 days', 'Confidence: any', 'Status: all', 'Activity: all'],
+      approveAllHigh: this.approveAllHigh,
+
+      breakdownRows: [
+        { tree: '├──', name: 'Pipe Support Installation', dates: '01 SEP → 02 SEP', crew: '8 crew · Rack-2', progress: '100%' },
+        { tree: '├──', name: 'Spool Erection', dates: '03 SEP → 05 SEP', crew: '12 crew · Rack-2', progress: '60%' },
+        { tree: '└──', name: 'Welding & Alignment', dates: '05 SEP → 07 SEP', crew: '6 crew · Rack-2', progress: '20%' }
+      ],
+      breakdownOptions: [
+        { label: 'Create child activities under PIP-100', desc: 'Adds three sub-activities; actuals roll up to the parent. Baseline dates of PIP-100 unchanged.', ring: '#2c5cc5' },
+        { label: 'Link field activities to parent only', desc: 'Keeps the schedule structure as-is; field detail stays inside TIME AGENT for reporting.', ring: '#c9d2dd' },
+        { label: 'Edit before approving', desc: 'Rename, merge or re-date the detected activities first.', ring: '#c9d2dd' },
+        { label: 'Reject detection', desc: 'Treat all six updates as progress on PIP-100. TIME AGENT records the rejection and learns from it.', ring: '#c9d2dd' }
+      ],
+      breakdownEvidence: [
+        { date: '01 SEP', text: '“Support installation started at Rack-2, 6 supports fixed.”' },
+        { date: '02 SEP', text: '“All 18 supports at Rack-2 completed and checked.”' },
+        { date: '03 SEP', text: '“Spool erection started on Line 24-XX at Rack-2.”' },
+        { date: '04 SEP', text: '“Around 60% of spools erected, crane available from 10:30.”' },
+        { date: '05 SEP', text: '“Welding and alignment crew mobilised at Rack-2.”' },
+        { date: '05 SEP', text: '“3 joints of 7 welded on Line 25-XX.”' }
+      ],
+      approveBreakdown: () => { this.setState({ breakdownApproved: true }); this.flash('Breakdown approved — 3 child activities created under PIP-100.'); },
+      breakdownApproved: s.breakdownApproved,
+
+      scheduleRows,
+
+      pmStats: [
+        { label: 'Activities delayed', value: '23', note: 'of 1,248 in progress', color: '#8a5a00' },
+        { label: 'Critical delays', value: '7', note: 'on critical path', color: '#b3261e' },
+        { label: 'Open blockers', value: '12', note: '4 material, 3 equipment', color: '#b3261e' }
+      ],
+      disciplines: [
+        { name: 'Civil', pct: 91, w: '91%', color: '#1f7a45' },
+        { name: 'Electrical', pct: 88, w: '88%', color: '#1f7a45' },
+        { name: 'Piping', pct: 84, w: '84%', color: '#b07306' },
+        { name: 'Instrumentation', pct: 79, w: '79%', color: '#b3261e' },
+        { name: 'HSE', pct: 95, w: '95%', color: '#1f7a45' }
+      ],
+      pmEvents: [
+        { text: 'Hydrotest of Line 20-XX pushed by 3 days — test blinds unavailable.', meta: '04 SEP · CRITICAL PATH · PIP-105', color: '#b3261e' },
+        { text: 'Line 25-XX erection completed 2 days ahead of plan.', meta: '04 SEP · PIP-102 · VALIDATED', color: '#1f7a45' },
+        { text: 'Piping work under PIP-100 decomposed into 3 field activities by planner approval.', meta: '04 SEP · PIP-100 · STRUCTURE', color: '#2c5cc5' },
+        { text: 'Instrumentation package slipped below 80% of planned progress.', meta: '03 SEP · DISCIPLINE · WARNING', color: '#b07306' }
+      ],
+      delayDrivers: [
+        { rank: '01', label: 'Crane availability', count: 11, days: '+6 d', w: '100%', key: 'crane' },
+        { rank: '02', label: 'Material availability', count: 9, days: '+5 d', w: '82%', key: 'material' },
+        { rank: '03', label: 'Welding machine maintenance', count: 6, days: '+2 d', w: '55%', key: 'welding' },
+        { rank: '04', label: 'Test blinds unavailable', count: 4, days: '+3 d', w: '36%', key: 'blinds' }
+      ].map((d) => ({ ...d, bg: dk === d.key ? '#f8fafd' : '#ffffff', drill: () => this.setState({ screen: 'analytics', drill: d.key }) })),
+      drill: dd,
+
+      notifications,
+
+      auditRows: [
+        { ts: '04 SEP 2026 18:42', update: 'Line 25-XX erection completed by 4 PM.', act: 'PIP-102', conf: '98%', decision: 'Approved', by: 'Priya Sharma', source: 'Daily Report' },
+        { ts: '04 SEP 2026 17:32', update: 'Line 24-XX spool erection started; 60% complete.', act: 'PIP-101', conf: '96%', decision: 'Approved', by: 'Priya Sharma', source: 'Supervisor Note' },
+        { ts: '04 SEP 2026 17:05', update: 'Pipe support installation Rack-2 finished.', act: 'PIP-104', conf: '89%', decision: 'Edited', by: 'Priya Sharma', source: 'Excel Upload' },
+        { ts: '04 SEP 2026 16:20', update: 'Support installation at rack completed today.', act: '—', conf: '61%', decision: 'Rejected', by: 'Priya Sharma', source: 'Voice Update' },
+        { ts: '04 SEP 2026 15:48', update: '6 updates under piping work (breakdown detection).', act: 'PIP-100', conf: '92%', decision: 'Pending', by: '—', source: 'AI Detection' },
+        { ts: '03 SEP 2026 19:58', update: 'Hydrotest prep blocked — test blinds unavailable.', act: 'PIP-105', conf: '97%', decision: 'Approved', by: 'Deepak Rao', source: 'Supervisor Note' }
+      ].map((a) => { const v = this.statusStyle(a.decision === 'Edited' ? 'Review' : a.decision); return { ...a, bg: v.bg, color: v.color }; }),
+
+      settingsTabs, st,
+      p6: connCard('p6', 'Primavera P6'), msp: connCard('msp', 'Microsoft Project'),
+      openP6: () => this.setState({ modal: 'p6', modalStage: 'form', connMethod: 'api' }),
+      openMsp: () => this.setState({ modal: 'msp', modalStage: 'form', connMethod: 'file' }),
+      closeModal: () => this.setState({ modal: null }),
+      doConnect: () => {
+        const key = s.modal;
+        this.setState((p) => ({ modalStage: 'success', connected: Object.assign({}, p.connected, { [key]: true }) }));
+      },
+      viewSchedule: () => this.setState({ modal: null, screen: 'schedule' }),
+      modal: {
+        open: !!s.modal,
+        form: s.modalStage === 'form',
+        success: s.modalStage === 'success',
+        title: modalIsP6 ? 'Connect Primavera P6' : 'Connect Microsoft Project',
+        methods: modalMethods,
+        fields: modalFields
+      },
+
+      generalRows: [
+        { label: 'Organisation', desc: 'Contractor account that owns this workspace', value: 'ABC Engineering' },
+        { label: 'Time zone', desc: 'Used for shift boundaries and cut-off times', value: 'IST (UTC+05:30)' },
+        { label: 'Daily update cut-off', desc: 'Updates after this time count for the next reporting day', value: '21:00' },
+        { label: 'Date format', desc: 'Applied across tables, exports and the audit trail', value: 'DD MMM YYYY' },
+        { label: 'Field input languages', desc: 'Voice and text updates accepted in these languages', value: 'EN · HI · TA' }
+      ],
+      projectFields: [
+        { label: 'Project name', value: '500 MW Power Plant' },
+        { label: 'Project code', value: 'ABCENG-500MW-U1' },
+        { label: 'Contractor', value: 'ABC Engineering' },
+        { label: 'Data date', value: '04 Sep 2026' },
+        { label: 'Baseline revision', value: 'Rev 4 — 12 Aug 2026' },
+        { label: 'Progress measurement', value: 'Physical % / quantity based' }
+      ],
+      disciplineChips: ['Civil', 'Piping', 'Electrical', 'Instrumentation', 'HSE'],
+      users: [
+        { name: 'Priya Sharma', email: 'priya.sharma@abceng.in', role: 'Planner', scope: 'Unit-1 · all disciplines', rights: 'Can approve', bg: '#f1f9f4', color: '#1f7a45' },
+        { name: 'Arun Menon', email: 'arun.menon@abceng.in', role: 'Project Manager', scope: 'Whole project', rights: 'Read only', bg: '#f0f2f5', color: '#5b6672' },
+        { name: 'Ramesh Kumar', email: 'ramesh.kumar@abceng.in', role: 'Site Supervisor', scope: 'Piping · Rack-2', rights: 'Submit only', bg: '#f2f6fd', color: '#2c5cc5' },
+        { name: 'Suresh Iyer', email: 'suresh.iyer@abceng.in', role: 'Site Supervisor', scope: 'Piping · Test bay', rights: 'Submit only', bg: '#f2f6fd', color: '#2c5cc5' },
+        { name: 'Deepak Rao', email: 'deepak.rao@abceng.in', role: 'Planner', scope: 'Unit-2 · all disciplines', rights: 'Can approve', bg: '#f1f9f4', color: '#1f7a45' }
+      ],
+      threshold: String(th), thresholdW: th + '%',
+      thresholdNote: 'Mappings at or above ' + th + '% confidence can be batch-approved by a planner in one action. They are still recorded as human decisions — TIME AGENT never writes to the schedule on its own.',
+      aiToggles: [
+        { label: 'Ask for clarification instead of guessing', desc: 'When signals conflict, TIME AGENT asks the supervisor a question rather than choosing a likely activity.', on: true },
+        { label: 'Detect activity breakdown', desc: 'Flag when field execution is more granular than the baseline activity.', on: true },
+        { label: 'Extract delay reasons', desc: 'Classify causes such as crane, material or equipment availability from free text.', on: true },
+        { label: 'Suggest new activities', desc: 'Propose activities absent from the schedule. Suggestions never enter the schedule automatically.', on: false },
+        { label: 'Show matching signals on every mapping', desc: 'Display the evidence behind each match so planners can audit the AI.', on: showSignals }
+      ].map((t2) => ({ ...t2, trackBg: t2.on ? '#2c5cc5' : '#d5dae1', justify: t2.on ? 'flex-end' : 'flex-start' })),
+      notifyMatrix: [
+        { event: 'New field update received', sup: '—', pl: 'Digest', pm: '—' },
+        { event: 'Update requires validation', sup: '—', pl: 'Instant', pm: '—' },
+        { event: 'AI clarification question', sup: 'Instant', pl: 'Digest', pm: '—' },
+        { event: 'Breakdown detected', sup: '—', pl: 'Instant', pm: 'Digest' },
+        { event: 'Critical path slip', sup: 'Digest', pl: 'Instant', pm: 'Instant' },
+        { event: 'Discipline behind plan', sup: '—', pl: 'Digest', pm: 'Instant' }
+      ].map((m) => ({ ...m, c1: m.sup === '—' ? '#c9d2dd' : '#26303c', c2: m.pl === '—' ? '#c9d2dd' : '#26303c', c3: m.pm === '—' ? '#c9d2dd' : '#26303c' })),
+      auditSettings: [
+        { label: 'Immutable decision log', desc: 'AI suggestions and human decisions are append-only and cannot be edited after the fact.', value: 'Enabled' },
+        { label: 'Retention period', desc: 'How long field updates, audio and audit records are kept.', value: '7 years' },
+        { label: 'Voice recording retention', desc: 'Original audio kept alongside the transcript for dispute resolution.', value: 'Enabled' },
+        { label: 'Approval attribution', desc: 'Every synced actual carries the approving planner\u2019s name and timestamp.', value: 'Enforced' },
+        { label: 'Export access', desc: 'Who can export the audit trail as CSV or PDF.', value: 'Planners, PM' }
+      ],
+
+      drawer: sel ? {
+        open: true, update: sel.update, source: sel.source, author: sel.author, received: 'Received ' + sel.meta,
+        actId: sel.actId, actName: sel.actName, event: sel.event, date: sel.date, progress: sel.progress,
+        delay: sel.delay, conf: sel.conf, confLevel: sel.confLevel.toUpperCase(), confColor: sel.confColor,
+        signals: sel.signals, approve: this.approve(sel.id)
+      } : { open: false, signals: [] },
+      closeDrawer: () => this.setState({ selected: null }),
+      toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
